@@ -29,7 +29,7 @@ public partial class SongsViewModel : ObservableObject
 		selectedSong = null;
 	}
 
-	public SongsViewModel(SoundPlayer sp)
+	public SongsViewModel(SoundPlayer sp,AppSettings settings)
 	{
 		soundPlayer = sp;
 		var db = new DatabaseHandler();

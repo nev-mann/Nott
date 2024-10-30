@@ -25,9 +25,14 @@ namespace Nott
             builder.Services.AddTransient<AlbumsViewModel>();
             builder.Services.AddTransient<AlbumsPage>();
 
+            builder.Services.AddTransient<SettingsViewModel>();
+            builder.Services.AddTransient<SettingsPage>();
+
             builder.Services.AddSingleton<SoundPlayer>();
+            builder.Services.AddSingleton<AppSettings>();
             builder.AddAudio();
 
+            
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Nott.Views.SongsPage"
+             Title="SongsPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <CollectionView ItemsSource="{Binding ListOfSongs}" Grid.Row="0" SelectionMode="Single"  x:Name="ItemsCollectionView"
+                        SelectedItem="{Binding SelectedSong}"
+            SelectionChangedCommand="{Binding PlaySongCommand}" 
+            SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference ItemsCollectionView}}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Id}" Margin="10"></Label>
+                            <Label Text="{Binding Title}" Margin="10"></Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+        </CollectionView>
+        <StackLayout Orientation="Horizontal" Grid.Row="1">
+            <Label Text="{Binding CurrentSong}"></Label>
+            <Slider WidthRequest="50"></Slider>
+        </StackLayout>
+    </Grid>
+</ContentPage>

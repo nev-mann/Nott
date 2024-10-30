@@ -10,15 +10,16 @@ namespace Nott.ViewModels;
 public partial class SongsViewModel : ObservableObject
 {
 	[ObservableProperty]
-	ObservableCollection<Song> listOfSongs ;
+	public ObservableCollection<Song> listOfSongs = [];
 
 	[ObservableProperty]
 	string currentSong;
 
 	[ObservableProperty]
-	string selectedSong;
+	string? selectedSong;
 
-	private SoundPlayer soundPlayer;
+	private readonly SoundPlayer soundPlayer;
+	private readonly AppSettings appSettings;
 
 	[RelayCommand]
 	public void PlaySong(Song song)
@@ -29,17 +30,23 @@ public partial class SongsViewModel : ObservableObject
 		selectedSong = null;
 	}
 
+	public void UpdateListSongs()
+    {
+		ListOfSongs.Clear();
+        var db = new DatabaseHandler();
+        var sl = new SongList(appSettings);
+        foreach (var x in sl.SongListGet())
+        {
+            db.AddSong(x);
+        }
+        ListOfSongs = new ObservableCollection<Song>(db.AllSongs());
+    }
+
 	public SongsViewModel(SoundPlayer sp,AppSettings settings)
 	{
 		soundPlayer = sp;
-		var db = new DatabaseHandler();
-		var sl = new SongList();
-		foreach(var x in sl.SongListGet())
-		{
-			db.AddSong(x);
-		}
-		listOfSongs = new ObservableCollection<Song>(db.AllSongs());
-        ListOfSongs = listOfSongs;
-		CurrentSong = sp.CurrentSong;
+		appSettings = settings;
+		UpdateListSongs();
+        CurrentSong = sp.CurrentSong;
     }
 }

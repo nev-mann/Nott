@@ -4,7 +4,7 @@ namespace Nott
 {
     public partial class AppShell : Shell
     {
-        AppSettings settings;
+        private readonly AppSettings settings;
 
         public AppShell(AppSettings settings)
         {

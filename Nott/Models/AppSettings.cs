@@ -1,11 +1,10 @@
-﻿using Microsoft.Maui.Storage;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Nott.Models
 {
     public class AppSettings
     {
-        private Settings settings { get; set; }
+        public Settings settings;
 
         private string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json");
 
@@ -32,17 +31,7 @@ namespace Nott.Models
             File.WriteAllText(settingsPath, JsonSerializer.Serialize(settings));
         }
 
-        public bool getShuffle()
-        {
-            return settings.Shuffle;
-        }
-
-        public void setShuffle(bool s)
-        {
-            settings.Shuffle = s;
-        }
-
-        private class Settings
+        public class Settings
         {
             public List<string> SongsFolders { get; set; }
 

@@ -1,3 +1,5 @@
+using Nott.Models;
+
 namespace Nott.Source
 {
     public class SongList
@@ -13,8 +15,9 @@ namespace Nott.Source
             ];
 
         private List<string> SongsPaths = [];        
-        public SongList()
+        public SongList(AppSettings ap)
         {
+            SongsFolders = ap.settings.SongsFolders;
             SongListUpdate();
         }
         public void SongListUpdate()

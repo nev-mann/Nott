@@ -7,8 +7,21 @@
         <Label 
             Text="Shuffle Songs"
             VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            HorizontalOptions="Center" />        
         <Switch IsToggled="{Binding Shuffle}"/>
+        <Entry x:Name="Entry" Text="{Binding FolderPath}"  ClearButtonVisibility="WhileEditing" />
+        <Button Text="Add folder" Command="{Binding AddFolderCommand}" CommandParameter="{Binding Text, Source={x:Reference Entry}}"/>
+        <CollectionView ItemsSource="{Binding SongsFolders}" x:Name="mCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding .}" Margin="10" x:Name="Label"></Label>
+                        <Button Text="X" Command="{Binding BindingContext.RemoveFolderCommand, Source={x:Reference Entry}}" 
+                                CommandParameter="{Binding Text, Source={x:Reference Label}}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
         <Button Text="Save settings" Command="{Binding SavingCommand}"/>
     </VerticalStackLayout>
 </ContentPage>

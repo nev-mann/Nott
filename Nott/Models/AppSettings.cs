@@ -11,14 +11,14 @@ namespace Nott.Models
         public AppSettings() {
             if (!File.Exists(settingsPath))
             {
-                var js = new Settings
+                settings = new Settings
                 {
                     SongsFolders = [
-                        Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
+                        @"C:\a"
                         ],
                     Shuffle = true,
                 };
-                File.WriteAllText(settingsPath, JsonSerializer.Serialize(js));
+                File.WriteAllText(settingsPath, JsonSerializer.Serialize(settings));
             }
             else
             {

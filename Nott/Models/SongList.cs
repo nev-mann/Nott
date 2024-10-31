@@ -4,9 +4,7 @@ namespace Nott.Source
 {
     public class SongList
     {
-        private List<string> SongsFolders = [
-            Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
-            ];
+        private List<string> SongsFolders;
 
         private List<string> Extensions = [
             ".mp3",
@@ -17,7 +15,8 @@ namespace Nott.Source
         private List<string> SongsPaths = [];        
         public SongList(AppSettings ap)
         {
-            SongsFolders = ap.settings.SongsFolders;
+            //Using ToList because without it, it is a refreance and I want a copy (better solution?) 
+            SongsFolders = ap.settings.SongsFolders.ToList();
             SongListUpdate();
         }
         public void SongListUpdate()

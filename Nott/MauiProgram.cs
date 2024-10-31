@@ -32,7 +32,9 @@ namespace Nott
             builder.Services.AddSingleton<AppSettings>();
             builder.AddAudio();
 
-            
+            //File.Delete(@"C:\Users\kamne\AppData\Local\Packages\com.companyname.nott_9zz4h110yvjzm\LocalCache\Roaming\Nott.json");
+            //File.Delete(@"C:\Users\kamne\AppData\Local\Packages\com.companyname.nott_9zz4h110yvjzm\LocalCache\Roaming\Nott.db");
+
 #if DEBUG
             builder.Logging.AddDebug();
 #endif

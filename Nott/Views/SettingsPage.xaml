@@ -17,7 +17,7 @@
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{Binding .}" Margin="10" x:Name="Label"></Label>
                         <Button Text="X" Command="{Binding BindingContext.RemoveFolderCommand, Source={x:Reference Entry}}" 
-                                CommandParameter="{Binding Text, Source={x:Reference Label}}"/>
+                        CommandParameter="{Binding Text, Source={x:Reference Label}}"/>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

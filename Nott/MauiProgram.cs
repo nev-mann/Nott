@@ -3,6 +3,8 @@ using Nott.Models;
 using Nott.Views;
 using Nott.ViewModels;
 using Plugin.Maui.Audio;
+using Nott.Source;
+using CommunityToolkit.Maui;
 
 namespace Nott
 {
@@ -13,6 +15,7 @@ namespace Nott
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -30,6 +33,7 @@ namespace Nott
 
             builder.Services.AddSingleton<SoundPlayer>();
             builder.Services.AddSingleton<AppSettings>();
+            builder.Services.AddSingleton<DatabaseHandler>();
             builder.AddAudio();
 
             //File.Delete(@"C:\Users\kamne\AppData\Local\Packages\com.companyname.nott_9zz4h110yvjzm\LocalCache\Roaming\Nott.json");

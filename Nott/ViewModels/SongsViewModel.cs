@@ -27,7 +27,7 @@ public partial class SongsViewModel : ObservableObject
 		soundPlayer.CurrentSong = song.Path;
         CurrentSong = song.Title;
 		soundPlayer.PlayAudio();
-		selectedSong = null;
+		SelectedSong = null;
 	}
 
 	public void UpdateListSongs()

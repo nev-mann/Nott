@@ -2,12 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Nott.Views.AlbumsPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              Title="AlbumsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
     <VerticalStackLayout>
-        <Label 
-            Text="{Binding Text}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Button Text="A" Command="{Binding UpdateCommand}"/>
+        <CollectionView ItemsSource="{Binding ListOfAlbums}" Grid.Row="0" SelectionMode="Single" x:Name="ItemsCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="{Binding Data, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                               WidthRequest="90" HeightRequest="90"/>
+                        <Label Text="{Binding Album.AlbumName}" Margin="10"></Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

@@ -18,7 +18,6 @@ namespace Nott.Source
             if (_db.Query<Song>("SELECT * FROM Songs WHERE path = \"" + path + "\"").Count > 0) return;
             
             var tfile = TagLib.File.Create(path);
-
             var song = new Song
             {
                 Path = path,
@@ -55,6 +54,11 @@ namespace Nott.Source
         public List<Song> AllSongs()
         {
             return _db.Query<Song>("SELECT * FROM Songs");
+        }
+
+        public List<Album> AllAlbums()
+        {
+            return _db.Query<Album>("SELECT * FROM Albums");
         }
     };
 

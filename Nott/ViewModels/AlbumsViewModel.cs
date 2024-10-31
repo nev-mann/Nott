@@ -1,25 +1,42 @@
+using CommunityToolkit.Mvvm.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
+using Nott.Source;
+using System.Collections.ObjectModel;
+using System.Data;
 
 namespace Nott.ViewModels;
 
 public partial class AlbumsViewModel : ObservableObject
 {
 	[ObservableProperty]
-	string text;
+	ObservableCollection<AlbumWithPicture> listOfAlbums = [];
 
+	[ObservableProperty]
 	private SoundPlayer soundPlayer;
-	public AlbumsViewModel(SoundPlayer sp)
+
+	public AlbumsViewModel(SoundPlayer sp,DatabaseHandler db)
 	{
         soundPlayer = sp;
-        Text = sp.CurrentSong;
+		var Albums = new List<Album>(db.AllAlbums());
+		foreach (Album album in Albums)
+		{
+            var tfile = TagLib.File.Create(album.AlbumPath);
+            AlbumWithPicture x = new AlbumWithPicture
+            {
+                album = album,
+                data = tfile.Tag.Pictures[0].Data.Data
+			};
+            ListOfAlbums.Add(x);
+		}
 	}
 
-	[RelayCommand]
-	public void Update()
-	{
-        Text = soundPlayer.CurrentSong;
-    }
-
+	public partial class AlbumWithPicture : ObservableObject
+    {
+		[ObservableProperty]
+		public Album album;
+		[ObservableProperty]
+        public byte[] data;
+	}
 }

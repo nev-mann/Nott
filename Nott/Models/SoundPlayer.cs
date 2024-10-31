@@ -4,6 +4,8 @@ namespace Nott.Models
 {
     public class SoundPlayer
     {
+        private FileStream musicFile;
+
         public string CurrentSong { get; set; }
 
         public bool IsPlaying { get; set; }
@@ -23,11 +25,12 @@ namespace Nott.Models
             if (audioPlayer != null && audioPlayer.IsPlaying)
             {
                 audioPlayer.Stop();
-                audioPlayer = null;
+                musicFile.Close();
                 return;
             }
 
-            audioPlayer = audioManager.CreatePlayer(File.Open(CurrentSong,FileMode.Open));
+            musicFile = File.Open(CurrentSong, FileMode.Open);
+            audioPlayer = audioManager.CreatePlayer(musicFile);
 
             audioPlayer.Volume = 0.05f;
             audioPlayer.Play();

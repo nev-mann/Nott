@@ -27,9 +27,9 @@ namespace Nott.Source
 
             _db.Insert(song);
 
-            //Add song's album, if exists stop
             if (tfile.Tag.Album == null) return;
-            if (_db.Query<Album>("SELECT * FROM Albums WHERE AlbumPath = \"" + path + "\"").Count > 0) return;
+            //Add song's album, if exists stop
+            if (_db.Query<Album>("SELECT * FROM Albums WHERE AlbumName = \"" + tfile.Tag.Album + "\"").Count > 0) return;
 
             var album = new Album
             {

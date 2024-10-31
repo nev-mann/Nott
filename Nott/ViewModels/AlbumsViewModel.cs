@@ -23,6 +23,7 @@ public partial class AlbumsViewModel : ObservableObject
 		foreach (Album album in Albums)
 		{
             var tfile = TagLib.File.Create(album.AlbumPath);
+			if (tfile.Tag.Pictures.Length == 0) continue;
             AlbumWithPicture x = new AlbumWithPicture
             {
                 album = album,

@@ -11,7 +11,7 @@
     </ContentPage.Resources>
 
 
-    <VerticalStackLayout>
+    <Grid>
         <CollectionView ItemsSource="{Binding ListOfAlbums}" Grid.Row="0" SelectionMode="Single" x:Name="ItemsCollectionView">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
@@ -23,5 +23,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

@@ -13,13 +13,21 @@ public partial class AlbumsViewModel : ObservableObject
 	[ObservableProperty]
 	ObservableCollection<AlbumWithPicture> listOfAlbums = [];
 
-	[ObservableProperty]
+    [ObservableProperty]
+    ObservableCollection<Song> listOfAlbumsSongs = [];
+
 	private SoundPlayer soundPlayer;
 
-	public AlbumsViewModel(SoundPlayer sp,DatabaseHandler db)
+	[ObservableProperty]
+	public AlbumWithPicture selectedAlbum;
+
+	private DatabaseHandler databaseHandler;
+
+    public AlbumsViewModel(SoundPlayer sp,DatabaseHandler db)
 	{
         soundPlayer = sp;
-		var Albums = new List<Album>(db.AllAlbums());
+		databaseHandler = db;
+		var Albums = new List<Album>(databaseHandler.AllAlbums());
 		foreach (Album album in Albums)
 		{
             var tfile = TagLib.File.Create(album.AlbumPath);
@@ -33,7 +41,24 @@ public partial class AlbumsViewModel : ObservableObject
 		}
 	}
 
-	public partial class AlbumWithPicture : ObservableObject
+	[RelayCommand]
+	public void DisplayAlbum(AlbumWithPicture ap)
+	{
+		ListOfAlbumsSongs.Clear();
+		foreach(var x in databaseHandler.AlbumsSongs(ap.album))
+		{
+            ListOfAlbumsSongs.Add(x);
+        }
+	}
+
+    [RelayCommand]
+    public void PlaySong(Song song)
+    {
+        soundPlayer.CurrentSong = song;
+        soundPlayer.PlayAudio();
+    }
+
+    public partial class AlbumWithPicture : ObservableObject
     {
 		[ObservableProperty]
 		public Album album;

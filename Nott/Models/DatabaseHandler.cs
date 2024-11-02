@@ -14,6 +14,7 @@ namespace Nott.Source
         }
         public void AddSong(string path)
         {
+
             //Add song, if exists stop
             if (_db.Query<Song>("SELECT * FROM Songs WHERE path = \"" + path + "\"").Count > 0) return;
             
@@ -22,10 +23,12 @@ namespace Nott.Source
             {
                 Path = path,
                 Album = tfile.Tag.Album,
-                Title = path[(path.LastIndexOf('\\') + 1)..]
+                Title = tfile.Tag.Title == null ? path[(path.LastIndexOf('\\') + 1)..] : tfile.Tag.Title
             };
 
             _db.Insert(song);
+
+
 
             if (tfile.Tag.Album == null) return;
             //Add song's album, if exists stop
@@ -59,6 +62,11 @@ namespace Nott.Source
         public List<Album> AllAlbums()
         {
             return _db.Query<Album>("SELECT * FROM Albums");
+        }
+
+        public List<Song> AlbumsSongs(Album album)
+        {
+            return _db.Query<Song>("SELECT * FROM Songs INNER JOIN Albums ON Songs.album=Albums.albumName WHERE Songs.album=\""+ album.AlbumName + '\"');
         }
     };
 

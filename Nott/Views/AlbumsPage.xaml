@@ -12,13 +12,31 @@
 
 
     <Grid>
-        <CollectionView ItemsSource="{Binding ListOfAlbums}" Grid.Row="0" SelectionMode="Single" x:Name="ItemsCollectionView">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <CollectionView ItemsSource="{Binding ListOfAlbums}" Grid.Row="0" Grid.Column="0" SelectionMode="Single" x:Name="ItemsCollectionView"
+                        SelectedItem="{Binding SelectedAlbum}"
+                        SelectionChangedCommand="{Binding DisplayAlbumCommand}" 
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal">
                         <Image Source="{Binding Data, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
                                WidthRequest="90" HeightRequest="90"/>
                         <Label Text="{Binding Album.AlbumName}" Margin="10"></Label>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <CollectionView ItemsSource="{Binding ListOfAlbumsSongs}" Grid.Row="0" Grid.Column="1" SelectionMode="Single"
+                        SelectionChangedCommand="{Binding PlaySongCommand}" 
+                        SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Title}" Margin="10"></Label>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

@@ -13,22 +13,28 @@ public partial class SongsViewModel : ObservableObject
 	public ObservableCollection<Song> listOfSongs = [];
 
 	[ObservableProperty]
-	string currentSong;
-
-	[ObservableProperty]
-	string? selectedSong;
+	Song selectedSong;
 
 	private readonly SoundPlayer soundPlayer;
 	private readonly AppSettings appSettings;
 
-	[RelayCommand]
-	public void PlaySong(Song song)
-	{
-		soundPlayer.CurrentSong = song.Path;
-        CurrentSong = song.Title;
-		soundPlayer.PlayAudio();
-		SelectedSong = null;
-	}
+    [RelayCommand]
+    public void AddToQueue(Song song)
+    {
+        soundPlayer.AddToQueue(song);
+    }
+
+    [RelayCommand]
+	public async Task PlaySong(Song song)
+    {
+        if (SelectedSong == null) return;
+        soundPlayer.CurrentSong = song;
+        soundPlayer.PlayAudio();
+        //Without this dalay the item was still selected
+        //Delay somehow fixes that
+        await Task.Delay(10);
+        SelectedSong = null;
+    }
 
 	public void UpdateListSongs()
     {
@@ -47,6 +53,5 @@ public partial class SongsViewModel : ObservableObject
 		soundPlayer = sp;
 		appSettings = settings;
 		UpdateListSongs();
-        CurrentSong = sp.CurrentSong;
     }
 }

@@ -1,39 +1,48 @@
-﻿using Plugin.Maui.Audio;
+﻿using Nott.Source;
+using Plugin.Maui.Audio;
 
 namespace Nott.Models
 {
     public class SoundPlayer
     {
+        private readonly IAudioManager audioManager;
+        private IAudioPlayer audioPlayer;
         private FileStream musicFile;
 
-        public string CurrentSong { get; set; }
+        public Song CurrentSong { get; set; }
 
-        public bool IsPlaying { get; set; }
-
-        private readonly IAudioManager audioManager;
-
-        private IAudioPlayer audioPlayer;
+        public Queue<Song> SongQueue = [];
 
         public SoundPlayer(IAudioManager audioManager) {
             this.audioManager = audioManager;
-            IsPlaying = false;
-            CurrentSong = "Test";
         }
 
-        public async void PlayAudio()
+        public void PlayAudio()
         {            
             if (audioPlayer != null && audioPlayer.IsPlaying)
             {
                 audioPlayer.Stop();
                 musicFile.Close();
-                return;
             }
 
-            musicFile = File.Open(CurrentSong, FileMode.Open);
+            musicFile = File.Open(CurrentSong.Path, FileMode.Open);
             audioPlayer = audioManager.CreatePlayer(musicFile);
+
+            audioPlayer.PlaybackEnded += new EventHandler(PlayNextInQueue);
 
             audioPlayer.Volume = 0.05f;
             audioPlayer.Play();
+        }
+
+        private void PlayNextInQueue(object? sender, EventArgs e)
+        {
+            CurrentSong = SongQueue.Dequeue();
+            PlayAudio();
+        }
+
+        public void AddToQueue(Song song)
+        {
+            SongQueue.Enqueue(song);
         }
     }
 }

@@ -15,6 +15,7 @@ namespace Nott.Models
                 {
                     SongsFolders = [
                         Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
+                        //@"C:\a"
                         ],
                     Shuffle = true,
                 };

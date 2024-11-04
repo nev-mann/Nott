@@ -5,6 +5,9 @@
              x:Class="Nott.Views.Controls.SongBarView"
              x:Name="View">
     <StackLayout Orientation="Horizontal">
+        <Slider WidthRequest="200" Value="{Binding Duration}" ></Slider>
+
+        <Label Text="Volume"></Label>
         <Label Text="{Binding Volume}"></Label>
         <Slider WidthRequest="200" Value="{Binding SliderValue}">
             <Slider.Behaviors>

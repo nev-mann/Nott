@@ -12,6 +12,9 @@ public partial class SongBarViewModel : ObservableObject
     string volume;
 
     [ObservableProperty]
+    public double duration;
+
+    [ObservableProperty]
     public double sliderValue;    
 
     public SongBarViewModel()

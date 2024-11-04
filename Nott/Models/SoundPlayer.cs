@@ -34,6 +34,19 @@ namespace Nott.Models
             appSettings = ap;
             SongQueue = [];
             Volume = appSettings.settings.Volume;
+            Loop();
+        }
+
+        private async Task Loop()
+        {
+            while (true)
+            {
+                if (audioPlayer != null && audioPlayer.CurrentPosition != 0)
+                {
+                    MauiProgram.GetSongBarViewModel<SongBarViewModel>().Duration = (audioPlayer.CurrentPosition / audioPlayer.Duration);
+                }
+                await Task.Delay(100);
+            }
         }
 
         public void PlayAudio()
@@ -52,6 +65,7 @@ namespace Nott.Models
 
             audioPlayer.Volume = Volume;
             audioPlayer.Play();
+
         }
 
         private void PlayNextInQueue(object? sender, EventArgs e)

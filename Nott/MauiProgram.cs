@@ -32,8 +32,8 @@ namespace Nott
             builder.Services.AddTransient<SongsViewModel>();
             builder.Services.AddTransient<SongsPage>(); 
 
-            builder.Services.AddTransient<AlbumsViewModel>();
-            builder.Services.AddTransient<AlbumsPage>();
+            builder.Services.AddSingleton<AlbumsViewModel>();
+            builder.Services.AddSingleton<AlbumsPage>();
 
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<SettingsPage>();

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Nott.Views.Controls.SongBarView"
+             x:Name="View">
+    <StackLayout Orientation="Horizontal">
+        <Label Text="{Binding Volume}"></Label>
+        <Slider WidthRequest="200" Value="{Binding SliderValue}">
+            <Slider.Behaviors>
+                <toolkit:EventToCommandBehavior
+                EventName="ValueChanged"
+                Command="{Binding ValueChangedCommand}" />
+            </Slider.Behaviors>
+        </Slider>
+    </StackLayout>
+</ContentView>

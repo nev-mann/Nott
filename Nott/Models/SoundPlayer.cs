@@ -1,5 +1,7 @@
 ﻿using Nott.Source;
+using Nott.ViewModels;
 using Plugin.Maui.Audio;
+using static SQLite.TableMapping;
 
 namespace Nott.Models
 {
@@ -8,21 +10,39 @@ namespace Nott.Models
         private readonly IAudioManager audioManager;
         private IAudioPlayer audioPlayer;
         private FileStream musicFile;
+        private AppSettings appSettings;
 
-        public Song CurrentSong { get; set; }
+        private double _volume;
+        public double Volume {
+            get { return _volume; }
+            set {
+                _volume = value;
+                appSettings.settings.Volume = value;
+                if (audioPlayer != null)
+                {
+                    audioPlayer.Volume = value;
+                }
+            } 
+        }
 
-        public Queue<Song> SongQueue = [];
+        public Song CurrentSong;
 
-        public SoundPlayer(IAudioManager audioManager) {
-            this.audioManager = audioManager;
+        public Queue<Song> SongQueue;
+
+        public SoundPlayer(IAudioManager am,AppSettings ap) {
+            audioManager = am;
+            appSettings = ap;
+            SongQueue = [];
+            Volume = appSettings.settings.Volume;
         }
 
         public void PlayAudio()
         {            
             if (audioPlayer != null && audioPlayer.IsPlaying)
             {
-                audioPlayer.Stop();
-                musicFile.Close();
+                audioPlayer.PlaybackEnded -= PlayNextInQueue;
+                audioPlayer.Dispose();
+                musicFile.Dispose();
             }
 
             musicFile = File.Open(CurrentSong.Path, FileMode.Open);
@@ -30,19 +50,24 @@ namespace Nott.Models
 
             audioPlayer.PlaybackEnded += new EventHandler(PlayNextInQueue);
 
-            audioPlayer.Volume = 0.05f;
+            audioPlayer.Volume = Volume;
             audioPlayer.Play();
         }
 
         private void PlayNextInQueue(object? sender, EventArgs e)
         {
-            CurrentSong = SongQueue.Dequeue();
-            PlayAudio();
+            musicFile.Close();
+            if (SongQueue.Count > 0)
+            {
+                CurrentSong = SongQueue.Dequeue();
+                PlayAudio();
+            }
         }
 
         public void AddToQueue(Song song)
         {
             SongQueue.Enqueue(song);
         }
+
     }
 }

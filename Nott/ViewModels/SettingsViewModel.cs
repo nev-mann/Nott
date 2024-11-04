@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
@@ -26,11 +27,20 @@ public partial class SettingsViewModel : ObservableObject
 	}
 
 	[RelayCommand]
-	public void AddFolder(string folderPath)
-	{
-		appSettings.settings.SongsFolders.Add(folderPath);
-		SongsFolders.Add(folderPath);
-	}
+	public async Task AddFolder(string folderPath)
+    {
+        try
+        {
+            var result = await FolderPicker.Default.PickAsync();
+
+            appSettings.settings.SongsFolders.Add(result.Folder.Path);
+            SongsFolders.Add(result.Folder.Path);
+        }
+        catch (Exception ex)
+        {
+            // The user canceled or something went wrong
+        }
+    }
 
 	[RelayCommand]
 	public void RemoveFolder(string folderPath)
@@ -45,4 +55,19 @@ public partial class SettingsViewModel : ObservableObject
         SongsFolders = new ObservableCollection<string>(appSettings.settings.SongsFolders);
         shuffle = appSettings.settings.Shuffle;
 	}
+    public async Task<FolderPickerResult> PickAndShow()
+    {
+        try
+        {
+            var result = await FolderPicker.Default.PickAsync();
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            // The user canceled or something went wrong
+        }
+
+        return null;
+    }
 }

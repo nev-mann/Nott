@@ -14,11 +14,15 @@ namespace Nott.Models
                 settings = new Settings
                 {
                     SongsFolders = [
-                        Environment.GetFolderPath(Environment.SpecialFolder.MyMusic)
-                        //@"C:\a"
+                        //Environment.GetFolderPath(Environment.SpecialFolder.MyMusic),
+                        //@"C:\a",
                         ],
                     Shuffle = true,
+                    Volume = 0.15f
                 };
+#if ANDROID
+                var x = Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDownloads).List();
+#endif
                 File.WriteAllText(settingsPath, JsonSerializer.Serialize(settings));
             }
             else
@@ -37,6 +41,8 @@ namespace Nott.Models
             public List<string> SongsFolders { get; set; }
 
             public bool Shuffle { get; set; }
+
+            public double Volume { get; set; }  
 
         }
     }

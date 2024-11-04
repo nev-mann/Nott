@@ -21,7 +21,7 @@ public partial class SongsViewModel : ObservableObject
     [RelayCommand]
     public void AddToQueue(Song song)
     {
-        soundPlayer.AddToQueue(song);
+        soundPlayer.AddToQueue(song);        
     }
 
     [RelayCommand]
@@ -50,7 +50,9 @@ public partial class SongsViewModel : ObservableObject
 
 	public SongsViewModel(SoundPlayer sp,AppSettings settings)
 	{
-		soundPlayer = sp;
+        //MauiProgram.GetSongBarViewModel<SongBarViewModel>().Volume = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json");
+
+        soundPlayer = sp;
 		appSettings = settings;
 		UpdateListSongs();
     }

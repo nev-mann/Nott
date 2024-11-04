@@ -5,11 +5,18 @@ using Nott.ViewModels;
 using Plugin.Maui.Audio;
 using Nott.Source;
 using CommunityToolkit.Maui;
+using Nott.Views.Controls;
 
 namespace Nott
 {
     public static class MauiProgram
     {
+        static IServiceProvider serviceProvider;
+        public static SoundPlayer? GetSoundPlayer<SoundPlayer>()
+            => serviceProvider.GetService<SoundPlayer>();
+        public static SongBarViewModel? GetSongBarViewModel<SongBarViewModel>()
+            => serviceProvider.GetService<SongBarViewModel>();
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -31,19 +38,23 @@ namespace Nott
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<SettingsPage>();
 
+            builder.Services.AddSingleton<SongBarViewModel>();
+            builder.Services.AddSingleton<SongBarView>();
+
             builder.Services.AddSingleton<SoundPlayer>();
             builder.Services.AddSingleton<AppSettings>();
             builder.Services.AddSingleton<DatabaseHandler>();
             builder.AddAudio();
 
-            //File.Delete(@"C:\Users\kamne\AppData\Local\Packages\com.companyname.nott_9zz4h110yvjzm\LocalCache\Roaming\Nott.json");
-            //File.Delete(@"C:\Users\kamne\AppData\Local\Packages\com.companyname.nott_9zz4h110yvjzm\LocalCache\Roaming\Nott.db");
+            //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json"));
+            //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.db"));
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
-            return builder.Build();
+            var app= builder.Build();
+            serviceProvider = app.Services;
+            return app;
         }
     }
 }

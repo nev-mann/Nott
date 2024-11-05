@@ -1,7 +1,5 @@
-﻿using Nott.Source;
-using Nott.ViewModels;
+﻿using Nott.ViewModels;
 using Plugin.Maui.Audio;
-using static SQLite.TableMapping;
 
 namespace Nott.Models
 {
@@ -28,44 +26,57 @@ namespace Nott.Models
         public Song CurrentSong;
 
         public Queue<Song> SongQueue;
+        private bool loading;
 
         public SoundPlayer(IAudioManager am,AppSettings ap) {
             audioManager = am;
             appSettings = ap;
-            SongQueue = [];
+            SongQueue = appSettings.settings.Queue;
             Volume = appSettings.settings.Volume;
-            Loop();
+            loading = false;
+            Task.Run(Loop);
         }
 
         private async Task Loop()
         {
             while (true)
             {
-                if (audioPlayer != null && audioPlayer.CurrentPosition != 0)
+                try
                 {
-                    MauiProgram.GetSongBarViewModel<SongBarViewModel>().Duration = (audioPlayer.CurrentPosition / audioPlayer.Duration);
+                    if (audioPlayer != null && audioPlayer.CurrentPosition != 0 && !loading)
+                    {
+                        MauiProgram.GetSongBarViewModel<SongBarViewModel>().Duration = (audioPlayer.CurrentPosition / audioPlayer.Duration);
+                    }
                 }
-                await Task.Delay(100);
+                catch(Exception ex) 
+                {
+                }
+                await Task.Delay(1000);
             }
         }
 
         public void PlayAudio()
-        {            
-            if (audioPlayer != null && audioPlayer.IsPlaying)
+        {
+            try
             {
-                audioPlayer.PlaybackEnded -= PlayNextInQueue;
-                audioPlayer.Dispose();
-                musicFile.Dispose();
+                if (audioPlayer != null)
+                {
+                    audioPlayer.PlaybackEnded -= PlayNextInQueue;
+                    audioPlayer.Stop();
+                    musicFile.Dispose();
+                }
+                musicFile = File.Open(CurrentSong.Path, FileMode.Open);
+                audioPlayer = audioManager.CreatePlayer(musicFile);
+
+                audioPlayer.PlaybackEnded += new EventHandler(PlayNextInQueue);
+                audioPlayer.Volume = Volume;
+                audioPlayer.Play();
             }
-
-            musicFile = File.Open(CurrentSong.Path, FileMode.Open);
-            audioPlayer = audioManager.CreatePlayer(musicFile);
-
-            audioPlayer.PlaybackEnded += new EventHandler(PlayNextInQueue);
-
-            audioPlayer.Volume = Volume;
-            audioPlayer.Play();
-
+            catch (Exception ex) { 
+                //Breakpoint for debugging
+                Task.Delay(10);
+            }
+            
         }
 
         private void PlayNextInQueue(object? sender, EventArgs e)

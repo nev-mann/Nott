@@ -8,7 +8,8 @@ namespace Nott.Models
 
         private string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json");
 
-        public AppSettings() {
+        public AppSettings() 
+        {
             if (!File.Exists(settingsPath))
             {
                 settings = new Settings
@@ -18,7 +19,8 @@ namespace Nott.Models
                         //@"C:\a",
                         ],
                     Shuffle = true,
-                    Volume = 0.15f
+                    Volume = 0.15f,
+                    Queue = []
                 };
 #if ANDROID
                 var x = Android.App.Application.Context.GetExternalFilesDir(Android.OS.Environment.DirectoryDownloads).List();
@@ -32,7 +34,9 @@ namespace Nott.Models
             }
         }
 
-        public void Save() {
+        public void Save() 
+        {
+            settings.Queue = MauiProgram.GetSoundPlayer<SoundPlayer>().SongQueue;
             File.WriteAllText(settingsPath, JsonSerializer.Serialize(settings));
         }
 
@@ -43,7 +47,7 @@ namespace Nott.Models
             public bool Shuffle { get; set; }
 
             public double Volume { get; set; }  
-
+            public Queue<Song> Queue { get; set; }
         }
     }
     

@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace Nott.Source
+namespace Nott.Models
 {
 
     [Table("Songs")]

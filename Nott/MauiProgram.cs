@@ -3,7 +3,6 @@ using Nott.Models;
 using Nott.Views;
 using Nott.ViewModels;
 using Plugin.Maui.Audio;
-using Nott.Source;
 using CommunityToolkit.Maui;
 using Nott.Views.Controls;
 
@@ -38,6 +37,9 @@ namespace Nott
             builder.Services.AddTransient<SettingsViewModel>();
             builder.Services.AddTransient<SettingsPage>();
 
+            builder.Services.AddSingleton<QueueViewModel>();
+            builder.Services.AddSingleton<QueuePage>();
+
             builder.Services.AddSingleton<SongBarViewModel>();
             builder.Services.AddSingleton<SongBarView>();
 
@@ -46,7 +48,7 @@ namespace Nott
             builder.Services.AddSingleton<DatabaseHandler>();
             builder.AddAudio();
 
-            //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json"));
+            File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json"));
             //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.db"));
 
 #if DEBUG

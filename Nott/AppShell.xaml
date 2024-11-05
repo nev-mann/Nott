@@ -14,7 +14,11 @@
         <ShellContent Route="AlbumsPage" ContentTemplate="{DataTemplate local:AlbumsPage}" />
     </FlyoutItem>
 
-    <FlyoutItem Title="Settings">
+    <FlyoutItem Title="Queue">
+        <ShellContent Route="QueuePage" ContentTemplate="{DataTemplate local:QueuePage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Settings" FlexLayout.AlignSelf="End">
         <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
     </FlyoutItem>
 </Shell>

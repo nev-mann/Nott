@@ -1,8 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
-using Nott.Source;
-using Plugin.Maui.Audio;
 using System.Collections.ObjectModel;
 
 namespace Nott.ViewModels;
@@ -38,7 +36,6 @@ public partial class SongsViewModel : ObservableObject
 
 	public void UpdateListSongs()
     {
-		ListOfSongs.Clear();
         var db = new DatabaseHandler();
         var sl = new SongList(appSettings);
         foreach (var x in sl.SongListGet())

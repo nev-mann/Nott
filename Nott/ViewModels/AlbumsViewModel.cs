@@ -1,10 +1,7 @@
-using CommunityToolkit.Mvvm.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
-using Nott.Source;
 using System.Collections.ObjectModel;
-using System.Data;
 
 namespace Nott.ViewModels;
 

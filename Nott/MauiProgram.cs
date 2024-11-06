@@ -28,14 +28,14 @@ namespace Nott
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddTransient<SongsViewModel>();
-            builder.Services.AddTransient<SongsPage>(); 
+            builder.Services.AddSingleton<SongsViewModel>();
+            builder.Services.AddSingleton<SongsPage>(); 
 
             builder.Services.AddSingleton<AlbumsViewModel>();
             builder.Services.AddSingleton<AlbumsPage>();
 
-            builder.Services.AddTransient<SettingsViewModel>();
-            builder.Services.AddTransient<SettingsPage>();
+            builder.Services.AddSingleton<SettingsViewModel>();
+            builder.Services.AddSingleton<SettingsPage>();
 
             builder.Services.AddSingleton<QueueViewModel>();
             builder.Services.AddSingleton<QueuePage>();

@@ -52,5 +52,6 @@ public partial class SongsViewModel : ObservableObject
         soundPlayer = sp;
 		appSettings = settings;
 		UpdateListSongs();
+        SelectedSong = new Song();
     }
 }

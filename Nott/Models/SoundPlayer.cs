@@ -25,15 +25,17 @@ namespace Nott.Models
 
         public Song CurrentSong;
 
-        public Queue<Song> SongQueue;
-        private bool loading;
+        public List<Song> SongQueue;
+        public delegate void QueueEventHandler();
+        public event QueueEventHandler OnChange;
+
 
         public SoundPlayer(IAudioManager am,AppSettings ap) {
             audioManager = am;
             appSettings = ap;
             SongQueue = appSettings.settings.Queue;
             Volume = appSettings.settings.Volume;
-            loading = false;
+            OnChange = delegate { }; 
             Task.Run(Loop);
         }
 
@@ -43,13 +45,14 @@ namespace Nott.Models
             {
                 try
                 {
-                    if (audioPlayer != null && audioPlayer.CurrentPosition != 0 && !loading)
+                    if (audioPlayer != null && audioPlayer.CurrentPosition != 0)
                     {
                         MauiProgram.GetSongBarViewModel<SongBarViewModel>().Duration = (audioPlayer.CurrentPosition / audioPlayer.Duration);
                     }
                 }
                 catch(Exception ex) 
                 {
+                    Task.Delay(1);
                 }
                 await Task.Delay(1000);
             }
@@ -84,15 +87,17 @@ namespace Nott.Models
             musicFile.Close();
             if (SongQueue.Count > 0)
             {
-                CurrentSong = SongQueue.Dequeue();
+                CurrentSong = SongQueue[0];
+                SongQueue.RemoveAt(0);
+                if (OnChange != null) OnChange();
                 PlayAudio();
             }
         }
 
         public void AddToQueue(Song song)
         {
-            SongQueue.Enqueue(song);
+            SongQueue.Add(song);
+            OnChange();
         }
-
     }
 }

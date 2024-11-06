@@ -47,7 +47,7 @@ namespace Nott.Models
             public bool Shuffle { get; set; }
 
             public double Volume { get; set; }  
-            public Queue<Song> Queue { get; set; }
+            public List<Song> Queue { get; set; }
         }
     }
     

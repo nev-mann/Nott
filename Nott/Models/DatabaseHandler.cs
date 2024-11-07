@@ -23,7 +23,8 @@ namespace Nott.Models
             {
                 Path = path,
                 Album = tfile.Tag.Album,
-                Title = tfile.Tag.Title == null ? path[(path.LastIndexOf('\\') + 1)..] : tfile.Tag.Title
+                Title = tfile.Tag.Title == null ? path[(path.LastIndexOf('\\') + 1)..] : tfile.Tag.Title,
+                Favorite = false
             };
 
             _db.Insert(song);
@@ -67,6 +68,11 @@ namespace Nott.Models
         public List<Song> AlbumsSongs(Album album)
         {
             return _db.Query<Song>("SELECT * FROM Songs INNER JOIN Albums ON Songs.album=Albums.albumName WHERE Songs.album=\""+ album.AlbumName + '\"');
+        }
+
+        public void ChangeFavoriteState(Song song)
+        {
+            _db.Update(song);
         }
     };
 

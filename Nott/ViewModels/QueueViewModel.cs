@@ -43,7 +43,7 @@ namespace Nott.ViewModels
 		[ObservableProperty]
             public int position;
 		[ObservableProperty]
-            public Song song;
+            public Song? song;
         }
     }
 }

@@ -54,4 +54,13 @@ public partial class SongsViewModel : ObservableObject
 		UpdateListSongs();
         SelectedSong = new Song();
     }
+
+    [RelayCommand]
+    public void HeartClicked(Song song)
+    {
+        var db = new DatabaseHandler();
+        song.Favorite ^= true;
+        ListOfSongs = new ObservableCollection<Song>(ListOfSongs);
+        db.ChangeFavoriteState(song);
+    }
 }

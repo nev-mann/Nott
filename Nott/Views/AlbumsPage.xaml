@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Nott.Views.AlbumsPage"
+             xmlns:controls="clr-namespace:Nott.Views.Controls"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Nott.Views.AlbumsPage"
              Title="AlbumsPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -10,13 +11,13 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-
-    <Grid>
+    <VerticalStackLayout>
+        <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>
             <ColumnDefinition ></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <CollectionView ItemsSource="{Binding ListOfAlbums}" Grid.Row="0" Grid.Column="0" SelectionMode="Single" x:Name="ItemsCollectionView"
+        <CollectionView ItemsSource="{Binding ListOfAlbums}" Grid.Row="0" SelectionMode="Single" x:Name="ItemsCollectionView"
                         SelectedItem="{Binding SelectedAlbum}"
                         SelectionChangedCommand="{Binding DisplayAlbumCommand}" 
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
@@ -41,5 +42,8 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </Grid>
+
+        </Grid>
+        <controls:SongBarView Grid.Row="1"/>
+    </VerticalStackLayout>
 </ContentPage>

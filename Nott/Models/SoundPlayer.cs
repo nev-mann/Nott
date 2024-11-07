@@ -29,7 +29,6 @@ namespace Nott.Models
         public delegate void QueueEventHandler();
         public event QueueEventHandler OnChange;
 
-
         public SoundPlayer(IAudioManager am,AppSettings ap) {
             audioManager = am;
             appSettings = ap;
@@ -50,9 +49,9 @@ namespace Nott.Models
                         MauiProgram.GetSongBarViewModel<SongBarViewModel>().Duration = (audioPlayer.CurrentPosition / audioPlayer.Duration);
                     }
                 }
-                catch(Exception ex) 
+                catch 
                 {
-                    Task.Delay(1);
+                    await Task.Delay(1);
                 }
                 await Task.Delay(1000);
             }
@@ -68,6 +67,7 @@ namespace Nott.Models
                     audioPlayer.Stop();
                     musicFile.Dispose();
                 }
+                if (CurrentSong.Path is null) return;
                 musicFile = File.Open(CurrentSong.Path, FileMode.Open);
                 audioPlayer = audioManager.CreatePlayer(musicFile);
 

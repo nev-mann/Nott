@@ -7,46 +7,46 @@ namespace Nott.ViewModels;
 
 public partial class AlbumsViewModel : ObservableObject
 {
-	[ObservableProperty]
-	ObservableCollection<AlbumWithPicture> listOfAlbums = [];
+    [ObservableProperty]
+    ObservableCollection<AlbumWithPicture> listOfAlbums = [];
 
     [ObservableProperty]
     ObservableCollection<Song> listOfAlbumsSongs = [];
 
-	private SoundPlayer soundPlayer;
+    private SoundPlayer soundPlayer;
 
-	[ObservableProperty]
-	public AlbumWithPicture selectedAlbum;
+    [ObservableProperty]
+    public AlbumWithPicture selectedAlbum;
 
-	private DatabaseHandler databaseHandler;
+    private DatabaseHandler databaseHandler;
 
-    public AlbumsViewModel(SoundPlayer sp,DatabaseHandler db)
-	{
+    public AlbumsViewModel(SoundPlayer sp, DatabaseHandler db)
+    {
         soundPlayer = sp;
-		databaseHandler = db;
-		var Albums = new List<Album>(databaseHandler.AllAlbums());
-		foreach (Album album in Albums)
-		{
+        databaseHandler = db;
+        var Albums = new List<Album>(databaseHandler.AllAlbums());
+        foreach (Album album in Albums)
+        {
             var tfile = TagLib.File.Create(album.AlbumPath);
-			if (tfile.Tag.Pictures.Length == 0) continue;
+            if (tfile.Tag.Pictures.Length == 0) continue;
             AlbumWithPicture x = new AlbumWithPicture
             {
-                album = album,
-                data = tfile.Tag.Pictures[0].Data.Data
-			};
+                Album = album,
+                Data = tfile.Tag.Pictures[0].Data.Data
+            };
             ListOfAlbums.Add(x);
-		}
-	}
+        }
+    }
 
-	[RelayCommand]
-	public void DisplayAlbum(AlbumWithPicture ap)
-	{
-		ListOfAlbumsSongs.Clear();
-		foreach(var x in databaseHandler.AlbumsSongs(ap.album))
-		{
+    [RelayCommand]
+    public void DisplayAlbum(AlbumWithPicture ap)
+    {
+        ListOfAlbumsSongs.Clear();
+        foreach (var x in databaseHandler.AlbumsSongs(ap.Album))
+        {
             ListOfAlbumsSongs.Add(x);
         }
-	}
+    }
 
     [RelayCommand]
     public void PlaySong(Song song)
@@ -57,9 +57,9 @@ public partial class AlbumsViewModel : ObservableObject
 
     public partial class AlbumWithPicture : ObservableObject
     {
-		[ObservableProperty]
-		public Album album;
-		[ObservableProperty]
+        [ObservableProperty]
+        public Album album;
+        [ObservableProperty]
         public byte[] data;
-	}
+    }
 }

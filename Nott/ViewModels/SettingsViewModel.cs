@@ -13,9 +13,6 @@ public partial class SettingsViewModel : ObservableObject
 	[ObservableProperty]
 	bool shuffle;
 
-	[ObservableProperty]
-	string folderPath;
-
     [ObservableProperty]
     ObservableCollection<string> songsFolders;
 
@@ -32,11 +29,13 @@ public partial class SettingsViewModel : ObservableObject
         try
         {
             var result = await FolderPicker.Default.PickAsync();
-
-            appSettings.settings.SongsFolders.Add(result.Folder.Path);
-            SongsFolders.Add(result.Folder.Path);
+            if (result.Folder is not null)
+            {
+                appSettings.settings.SongsFolders.Add(result.Folder.Path);
+                SongsFolders.Add(result.Folder.Path);
+            }
         }
-        catch (Exception ex)
+        catch
         {
             // The user canceled or something went wrong
         }
@@ -55,19 +54,4 @@ public partial class SettingsViewModel : ObservableObject
         SongsFolders = new ObservableCollection<string>(appSettings.settings.SongsFolders);
         shuffle = appSettings.settings.Shuffle;
 	}
-    public async Task<FolderPickerResult> PickAndShow()
-    {
-        try
-        {
-            var result = await FolderPicker.Default.PickAsync();
-
-            return result;
-        }
-        catch (Exception ex)
-        {
-            // The user canceled or something went wrong
-        }
-
-        return null;
-    }
 }

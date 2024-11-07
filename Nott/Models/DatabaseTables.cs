@@ -19,6 +19,9 @@ namespace Nott.Models
 
         [Column("album")]
         public string? Album { get; set; }
+
+        [Column("favorite")]
+        public bool? Favorite { get; set; }
     }
 
     [Table("Albums")]

@@ -1,15 +1,19 @@
-﻿using System.Text.Json;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Text.Json;
 
 namespace Nott.Models
 {
     public class AppSettings
     {
-        public Settings settings;
+        public Settings? settings;
+        private SoundPlayer soundPlayer;
+        private DatabaseHandler databaseHandler;
 
         private string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json");
 
-        public AppSettings() 
+        public AppSettings(SoundPlayer sp, DatabaseHandler db)
         {
+            soundPlayer = sp; databaseHandler = db;
             if (!File.Exists(settingsPath))
             {
                 settings = new Settings
@@ -19,6 +23,7 @@ namespace Nott.Models
                         //@"C:\a",
                         ],
                     Shuffle = true,
+                    Repeat = false,
                     Volume = 0.15f,
                     Queue = []
                 };
@@ -32,23 +37,35 @@ namespace Nott.Models
                 var jsonString = File.ReadAllText(settingsPath);
                 settings = (Settings?)JsonSerializer.Deserialize(jsonString, typeof(Settings));
             }
+
+            soundPlayer.repeat = settings.Repeat;
+            soundPlayer.shuffle = settings.Shuffle;
+            soundPlayer.songQueue = settings.Queue;
+            soundPlayer.volume = settings.Volume;
         }
 
-        public void Save() 
+        public void Save()
         {
-            settings.Queue = MauiProgram.GetSoundPlayer<SoundPlayer>().SongQueue;
+            settings.Repeat = soundPlayer.repeat;
+            settings.Shuffle = soundPlayer.shuffle;
+            settings.Queue = soundPlayer.songQueue;
+            settings.Volume = soundPlayer.volume;
             File.WriteAllText(settingsPath, JsonSerializer.Serialize(settings));
         }
-
-        public class Settings
-        {
-            public List<string> SongsFolders { get; set; }
-
-            public bool Shuffle { get; set; }
-
-            public double Volume { get; set; }  
-            public List<Song> Queue { get; set; }
-        }
     }
-    
+    public class Settings
+    {
+        public List<string>? SongsFolders { get; set; }
+        public bool Shuffle { get; set; }
+        public bool Repeat { get; set; }
+        public double Volume { get; set; }
+        public List<Song>? Queue { get; set; }
+    }
+    public partial class AlbumWithPicture : ObservableObject
+    {
+        [ObservableProperty]
+        public Album album;
+        [ObservableProperty]
+        public byte[] data;
+    }
 }

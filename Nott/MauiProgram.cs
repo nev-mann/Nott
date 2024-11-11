@@ -11,11 +11,11 @@ namespace Nott
     public static class MauiProgram
     {
         static IServiceProvider serviceProvider;
-        public static SoundPlayer? GetSoundPlayer<SoundPlayer>()
+        public static SoundPlayer GetSoundPlayer<SoundPlayer>()
             => serviceProvider.GetService<SoundPlayer>();
-        public static SongBarViewModel? GetSongBarViewModel<SongBarViewModel>()
+        public static SongBarViewModel GetSongBarViewModel<SongBarViewModel>()
             => serviceProvider.GetService<SongBarViewModel>();
-
+        
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();

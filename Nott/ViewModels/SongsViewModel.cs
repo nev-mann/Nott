@@ -11,30 +11,46 @@ public partial class SongsViewModel : ObservableObject
 	public ObservableCollection<Song> listOfSongs = [];
 
 	[ObservableProperty]
-	Song selectedSong;
+	Song? selectedSong;
 
 	private readonly SoundPlayer soundPlayer;
 	private readonly AppSettings appSettings;
+
+    public SongsViewModel(SoundPlayer sp, AppSettings settings)
+    {
+        soundPlayer = sp;
+        appSettings = settings;
+        UpdateListSongs();
+        SelectedSong = new Song();
+    }
 
     [RelayCommand]
     public void AddToQueue(Song song)
     {
         soundPlayer.AddToQueue(song);        
     }
-
     [RelayCommand]
-	public async Task PlaySong(Song song)
+	public void PlaySong(Song song)
     {
-        if (SelectedSong == null) return;
-        soundPlayer.CurrentSong = song;
+        if (SelectedSong is null) return;
+        soundPlayer.currentSong = song;
         soundPlayer.PlayAudio();
         //Without this dalay the item was still selected
         //Delay somehow fixes that
-        await Task.Delay(10);
-        SelectedSong = null;
+        Task.Run(async () => {
+            await Task.Delay(10);
+            SelectedSong = null;
+        });
     }
-
-	public void UpdateListSongs()
+    [RelayCommand]
+    public void HeartClicked(Song song)
+    {
+        var db = new DatabaseHandler();
+        song.Favorite ^= true;
+        //ListOfSongs = new ObservableCollection<Song>(ListOfSongs);
+        db.ChangeFavoriteState(song);
+    }
+    public void UpdateListSongs()
     {
         var db = new DatabaseHandler();
         var sl = new SongList(appSettings);
@@ -43,24 +59,5 @@ public partial class SongsViewModel : ObservableObject
             db.AddSong(x);
         }
         ListOfSongs = new ObservableCollection<Song>(db.AllSongs());
-    }
-
-	public SongsViewModel(SoundPlayer sp,AppSettings settings)
-	{
-        //MauiProgram.GetSongBarViewModel<SongBarViewModel>().Volume = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json");
-
-        soundPlayer = sp;
-		appSettings = settings;
-		UpdateListSongs();
-        SelectedSong = new Song();
-    }
-
-    [RelayCommand]
-    public void HeartClicked(Song song)
-    {
-        var db = new DatabaseHandler();
-        song.Favorite ^= true;
-        ListOfSongs = new ObservableCollection<Song>(ListOfSongs);
-        db.ChangeFavoriteState(song);
     }
 }

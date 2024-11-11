@@ -91,7 +91,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Resources\Images\" />
+	  <MauiImage Include="Resources\Images\BarButton\pause.png" />
+	  <MauiImage Include="Resources\Images\BarButton\play.png" />
+	  <MauiImage Include="Resources\Images\BarButton\repeat.png" />
+	  <MauiImage Include="Resources\Images\BarButton\shuffle.png" />
+	  <MauiImage Include="Resources\Images\Heart\add.png" />
+	  <MauiImage Include="Resources\Images\Heart\not.png" />
+	  <MauiImage Include="Resources\Images\Heart\remove.png" />
+	  <MauiImage Include="Resources\Images\Heart\yes.png" />
 	</ItemGroup>
 
 </Project>

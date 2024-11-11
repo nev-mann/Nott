@@ -1,4 +1,5 @@
 ﻿using Nott.Models;
+using Nott.ViewModels;
 
 namespace Nott
 {

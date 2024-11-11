@@ -23,7 +23,7 @@ namespace Nott.ViewModels
         {
             SongQueue = [];
             var i = 0;
-            foreach (var song in soundPlayer.SongQueue)
+            foreach (var song in soundPlayer.songQueue)
             {
                 SongQueue.Add(new PositionSong { Position = i, Song = song });
                 i++;
@@ -34,7 +34,7 @@ namespace Nott.ViewModels
         public void RemoveSong(int position)
         {
             SongQueue.RemoveAt(position);
-            soundPlayer.SongQueue.RemoveAt(position);
+            soundPlayer.songQueue.RemoveAt(position);
             UpdateView();
         }
 

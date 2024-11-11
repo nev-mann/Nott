@@ -1,44 +1,36 @@
-﻿using Nott.ViewModels;
+﻿using CommunityToolkit.Maui.Core.Extensions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Nott.ViewModels;
 using Plugin.Maui.Audio;
+using System;
 
 namespace Nott.Models
 {
     public class SoundPlayer
     {
         private readonly IAudioManager audioManager;
-        private IAudioPlayer audioPlayer;
-        private FileStream musicFile;
-        private AppSettings appSettings;
+        private IAudioPlayer? audioPlayer;
 
-        private double _volume;
-        public double Volume {
-            get { return _volume; }
-            set {
-                _volume = value;
-                appSettings.settings.Volume = value;
-                if (audioPlayer != null)
-                {
-                    audioPlayer.Volume = value;
-                }
-            } 
-        }
+        public double volume;
+        public int position;
+        public bool shuffle;
+        public bool repeat;
 
-        public Song CurrentSong;
+        public Song? currentSong;
 
-        public List<Song> SongQueue;
+        public List<Song> songQueue;
+
         public delegate void QueueEventHandler();
         public event QueueEventHandler OnChange;
 
-        public SoundPlayer(IAudioManager am,AppSettings ap) {
+        public SoundPlayer(IAudioManager am) {
             audioManager = am;
-            appSettings = ap;
-            SongQueue = appSettings.settings.Queue;
-            Volume = appSettings.settings.Volume;
             OnChange = delegate { }; 
-            Task.Run(Loop);
+            position = 0;
+            songQueue = [];
+            Task.Run(UpdateDuration);
         }
-
-        private async Task Loop()
+        private async Task UpdateDuration()
         {
             while (true)
             {
@@ -53,26 +45,24 @@ namespace Nott.Models
                 {
                     await Task.Delay(1);
                 }
-                await Task.Delay(1000);
+                await Task.Delay(300);
             }
         }
-
         public void PlayAudio()
         {
             try
             {
-                if (audioPlayer != null)
+                if (audioPlayer != null && audioPlayer.IsPlaying)
                 {
                     audioPlayer.PlaybackEnded -= PlayNextInQueue;
-                    audioPlayer.Stop();
-                    musicFile.Dispose();
-                }
-                if (CurrentSong.Path is null) return;
-                musicFile = File.Open(CurrentSong.Path, FileMode.Open);
-                audioPlayer = audioManager.CreatePlayer(musicFile);
+                    audioPlayer.Stop();                    
+                    audioPlayer.Dispose();
+                }                
+                if (currentSong is null) return;           
+                audioPlayer = audioManager.CreatePlayer(new MemoryStream(File.ReadAllBytes(currentSong.Path)));
 
                 audioPlayer.PlaybackEnded += new EventHandler(PlayNextInQueue);
-                audioPlayer.Volume = Volume;
+                audioPlayer.Volume = volume;
                 audioPlayer.Play();
             }
             catch (Exception ex) { 
@@ -81,23 +71,30 @@ namespace Nott.Models
             }
             
         }
-
+        public void PauseAudio() => audioPlayer?.Pause();
+        public void ResumeAudio() => audioPlayer?.Play();
         private void PlayNextInQueue(object? sender, EventArgs e)
         {
-            musicFile.Close();
-            if (SongQueue.Count > 0)
+            position++;
+            if (songQueue.Count > 0)
             {
-                CurrentSong = SongQueue[0];
-                SongQueue.RemoveAt(0);
-                if (OnChange != null) OnChange();
+                currentSong = songQueue[position];
+                OnChange?.Invoke();
                 PlayAudio();
             }
         }
-
         public void AddToQueue(Song song)
         {
-            SongQueue.Add(song);
+            songQueue.Add(song);
             OnChange();
+        }
+        public void SetVolume(double v)
+        {
+            volume = v;
+            if (audioPlayer != null)
+            {
+                audioPlayer.Volume = v;
+            }
         }
     }
 }

@@ -2,19 +2,64 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="Nott.Views.Controls.SongBarView"
-             x:Name="View">
-    <StackLayout Orientation="Horizontal">
-        <Slider WidthRequest="200" Value="{Binding Duration}" ></Slider>
+             xmlns:ViewModels="clr-namespace:Nott.ViewModels"
+             x:DataType="ViewModels:SongBarViewModel"
+             x:Class="Nott.Views.Controls.SongBarView">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-        <Label Text="Volume"></Label>
-        <Label Text="{Binding Volume}"></Label>
-        <Slider WidthRequest="200" Value="{Binding SliderValue}">
-            <Slider.Behaviors>
-                <toolkit:EventToCommandBehavior
-                EventName="ValueChanged"
-                Command="{Binding ValueChangedCommand}" />
-            </Slider.Behaviors>
-        </Slider>
-    </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Button HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent"                            
+                Command="{Binding PlayClickedCommand}" ImageSource="{Binding PlaySource}">                
+            </Button>
+
+            <Slider VerticalOptions="Center" WidthRequest="200" Value="{Binding Duration}"></Slider>
+
+            <Button HeightRequest="50" WidthRequest="50" ImageSource="repeat.png"                       
+                Command="{Binding RepeatClickedCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Repeat}" Value="False">
+                                <Setter Property="BackgroundColor" Value="Transparent"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding Repeat}" Value="True">
+                                <Setter Property="BackgroundColor" Value="Purple"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button HeightRequest="50" WidthRequest="50" ImageSource="shuffle.png"         
+                Command="{Binding ShuffleClickedCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding Shuffle}" Value="False">
+                                <Setter Property="BackgroundColor" Value="Transparent"/>
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding Shuffle}" Value="True">
+                                <Setter Property="BackgroundColor" Value="Purple"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="End" Grid.Column="1">
+            <Slider WidthRequest="200" Value="{Binding SliderValue}">
+                <Slider.Behaviors>
+                    <toolkit:EventToCommandBehavior
+                    EventName="ValueChanged"
+                    Command="{Binding ValueChangedCommand}" />
+                </Slider.Behaviors>
+            </Slider>
+            <Label Text="{Binding Volume}" Padding="15,6,15,0" WidthRequest="68"></Label>
+        </StackLayout>
+    </Grid>
 </ContentView>

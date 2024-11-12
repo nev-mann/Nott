@@ -28,9 +28,10 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal">
-                        <Image Source="{Binding Data, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
-                               WidthRequest="90" HeightRequest="90"/>
-                        <Label Text="{Binding Album.AlbumName}" Margin="10"></Label>
+                            <Image Source="{Binding Data, Converter={StaticResource ByteArrayToImageSourceConverter}}"
+                               WidthRequest="90" HeightRequest="90" Aspect="AspectFit">
+                            </Image>
+                            <Label Text="{Binding Album.AlbumName}" Margin="10"></Label>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

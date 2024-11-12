@@ -13,7 +13,8 @@ namespace Nott
 #if ANDROID || IOS
             this.FlyoutBehavior = FlyoutBehavior.Flyout;
 #else
-    this.FlyoutBehavior = FlyoutBehavior.Locked;
+            this.FlyoutBehavior = FlyoutBehavior.Locked;
+            this.FlyoutWidth = 150;
 #endif
         }
         protected override void OnDisappearing()

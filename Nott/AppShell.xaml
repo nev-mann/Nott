@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Nott.Views"
     Title="Nott">
-
+    
     <FlyoutItem Title="Songs">
         <ShellContent Route="SongsPage" ContentTemplate="{DataTemplate local:SongsPage}" />
     </FlyoutItem>

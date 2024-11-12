@@ -13,7 +13,10 @@ namespace Nott.Models
         [Unique]
         [Column("path")]
         public string? Path { get; set; }
-        
+
+        [Column("artist")]
+        public string? Artist { get; set; }
+
         [Column("title")]
         public string? Title { get; set; }
 
@@ -22,6 +25,9 @@ namespace Nott.Models
 
         [Column("favorite")]
         public bool? Favorite { get; set; }
+
+        [Column("timeslistened")]
+        public int? TimesListened { get; set; }
     }
 
     [Table("Albums")]

@@ -52,16 +52,16 @@ namespace Nott.Models
         {
             try
             {
-                if (audioPlayer != null && audioPlayer.IsPlaying)
+                if (audioPlayer != null)
                 {
-                    audioPlayer.PlaybackEnded -= PlayNextInQueue;
+                    audioPlayer.PlaybackEnded -= PlaybackEnded;
                     audioPlayer.Stop();                    
                     audioPlayer.Dispose();
-                }                
+                }
                 if (currentSong is null) return;           
                 audioPlayer = audioManager.CreatePlayer(new MemoryStream(File.ReadAllBytes(currentSong.Path)));
 
-                audioPlayer.PlaybackEnded += new EventHandler(PlayNextInQueue);
+                audioPlayer.PlaybackEnded += new EventHandler(PlaybackEnded);
                 audioPlayer.Volume = volume;
                 audioPlayer.Play();
             }
@@ -73,8 +73,15 @@ namespace Nott.Models
         }
         public void PauseAudio() => audioPlayer?.Pause();
         public void ResumeAudio() => audioPlayer?.Play();
-        private void PlayNextInQueue(object? sender, EventArgs e)
+        private void PlaybackEnded(object? sender, EventArgs e)
         {
+            //add times listened
+            var db = new DatabaseHandler();
+            currentSong.TimesListened += 1;
+            db.Update(currentSong);
+            
+
+            //play next song
             position++;
             if (songQueue.Count > 0)
             {

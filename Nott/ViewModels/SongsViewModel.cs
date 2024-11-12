@@ -47,8 +47,8 @@ public partial class SongsViewModel : ObservableObject
     {
         var db = new DatabaseHandler();
         song.Favorite ^= true;
-        //ListOfSongs = new ObservableCollection<Song>(ListOfSongs);
-        db.ChangeFavoriteState(song);
+        ListOfSongs[song.Id-1] = song;
+        db.Update(song);
     }
     public void UpdateListSongs()
     {

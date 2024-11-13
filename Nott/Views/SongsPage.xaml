@@ -23,7 +23,6 @@
                         </Grid.RowDefinitions>
                         <!--<BoxView Style="{StaticResource HorizontalBoarder}" Margin="10,0,0,0"/>-->
                         <StackLayout Orientation="Horizontal" Grid.Row="1">
-
                             <FlyoutBase.ContextFlyout>
                                 <MenuFlyout>
                                     <MenuFlyoutItem Text="Add To Queue"
@@ -56,9 +55,7 @@
                             
                             <Label Text="{Binding Artist}" Margin="10,10,10,0" WidthRequest="300" LineBreakMode="HeadTruncation"/>
                             <Label Text="{Binding Album}" Margin="10,10,10,0" WidthRequest="300" LineBreakMode="HeadTruncation"/>
-                            <Label Text="{Binding TimesListened}" Margin="10,10,10,0" WidthRequest="160" LineBreakMode="HeadTruncation"/>
-
-                            
+                            <Label Text="{Binding TimesListened}" Margin="10,10,10,0" WidthRequest="160" LineBreakMode="HeadTruncation"/>                            
                         </StackLayout> 
                     </Grid>
                 </DataTemplate>

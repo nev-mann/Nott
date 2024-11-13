@@ -22,5 +22,11 @@ namespace Nott
             base.OnDisappearing();
             settings.Save();
         }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.Window.MinimumHeight = 300;
+            this.Window.MinimumWidth = 1300;
+        }
     }
 }

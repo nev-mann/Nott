@@ -1,15 +1,11 @@
-﻿using CommunityToolkit.Maui.Core.Extensions;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Nott.ViewModels;
-using Plugin.Maui.Audio;
-using System;
+﻿using Plugin.Maui.Audio;
 
 namespace Nott.Models
 {
     public class SoundPlayer
     {
         private readonly IAudioManager audioManager;
-        private IAudioPlayer? audioPlayer;
+        public IAudioPlayer? audioPlayer;
 
         public double volume;
         public int position;
@@ -20,33 +16,17 @@ namespace Nott.Models
 
         public List<Song> songQueue;
 
-        public delegate void QueueEventHandler();
-        public event QueueEventHandler OnChange;
+       
+        public delegate void EventHandler();
+        public event EventHandler OnChange = delegate { };
+        public event EventHandler PlaybackStarted = delegate { };
+        public event EventHandler PlaybackNotFinished = delegate { };
 
-        public SoundPlayer(IAudioManager am) {
+        public SoundPlayer(IAudioManager am)
+        {
             audioManager = am;
-            OnChange = delegate { }; 
             position = 0;
             songQueue = [];
-            Task.Run(UpdateDuration);
-        }
-        private async Task UpdateDuration()
-        {
-            while (true)
-            {
-                try
-                {
-                    if (audioPlayer != null && audioPlayer.CurrentPosition != 0)
-                    {
-                        MauiProgram.GetSongBarViewModel<SongBarViewModel>().Duration = (audioPlayer.CurrentPosition / audioPlayer.Duration);
-                    }
-                }
-                catch 
-                {
-                    await Task.Delay(1);
-                }
-                await Task.Delay(300);
-            }
         }
         public void PlayAudio()
         {
@@ -55,21 +35,23 @@ namespace Nott.Models
                 if (audioPlayer != null)
                 {
                     audioPlayer.PlaybackEnded -= PlaybackEnded;
-                    audioPlayer.Stop();                    
+                    audioPlayer.Stop();
                     audioPlayer.Dispose();
                 }
-                if (currentSong is null) return;           
+                if (currentSong is null) return;
                 audioPlayer = audioManager.CreatePlayer(new MemoryStream(File.ReadAllBytes(currentSong.Path)));
 
-                audioPlayer.PlaybackEnded += new EventHandler(PlaybackEnded);
+                audioPlayer.PlaybackEnded += PlaybackEnded;
                 audioPlayer.Volume = volume;
                 audioPlayer.Play();
+                PlaybackStarted?.Invoke();
             }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
                 //Breakpoint for debugging
                 Task.Delay(10);
             }
-            
+
         }
         public void PauseAudio() => audioPlayer?.Pause();
         public void ResumeAudio() => audioPlayer?.Play();
@@ -79,7 +61,7 @@ namespace Nott.Models
             var db = new DatabaseHandler();
             currentSong.TimesListened += 1;
             db.Update(currentSong);
-            
+
 
             //play next song
             position++;

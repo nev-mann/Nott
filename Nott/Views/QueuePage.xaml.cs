@@ -4,9 +4,16 @@ namespace Nott.Views;
 
 public partial class QueuePage : ContentPage
 {
-	public QueuePage(QueueViewModel vm)
+    private QueueViewModel viewmodel;
+    public QueuePage(QueueViewModel vm)
 	{
 		InitializeComponent();
+        viewmodel = vm;
         BindingContext = vm;
+    }
+    protected override void OnAppearing()
+    {
+        viewmodel.UpdateView();
+        base.OnAppearing();
     }
 }

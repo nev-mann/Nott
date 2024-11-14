@@ -7,10 +7,19 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <CollectionView ItemsSource="{Binding ListOfSongs}" Grid.Row="0" SelectionMode="Single" x:Name="ItemsCollectionView"
+        <StackLayout Orientation="Horizontal">
+            <Label Margin="10,10,10,0" WidthRequest="300">Title</Label>
+            <Label Margin="0,10,10,0" WidthRequest="60">Favorite</Label>
+            <Label Margin="0,10,10,0" WidthRequest="300">Artist</Label>
+            <Label Margin="0,10,10,0" WidthRequest="300">Album</Label>
+            <Label Margin="0,10,10,0" WidthRequest="160">Plays</Label>
+        </StackLayout>        
+        
+        <CollectionView ItemsSource="{Binding ListOfSongs}" Grid.Row="1" SelectionMode="Single" x:Name="ItemsCollectionView"
                         SelectedItem="{Binding SelectedSong}"
                         SelectionChangedCommand="{Binding PlaySongCommand}" 
                         SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference ItemsCollectionView}}" ItemsUpdatingScrollMode="KeepScrollOffset">
@@ -30,12 +39,10 @@
                                                     Command="{Binding AddToQueueCommand}"
                                                     CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type StackLayout}}, Path=BindingContext}"/>
                                 </MenuFlyout>
-                            </FlyoutBase.ContextFlyout>
-                            
-                            <Label Text="{Binding Id}" Margin="10,10,10,0" MinimumWidthRequest="30" HorizontalOptions="End"/>
+                            </FlyoutBase.ContextFlyout>                            
                             <Label Text="{Binding Title}" Margin="10,10,10,0" WidthRequest="300" LineBreakMode="HeadTruncation"/>
-                            
-                            <Button HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent"
+
+                            <Button Margin="0,0,10,0" HeightRequest="50" WidthRequest="50" BackgroundColor="Transparent"
                                 BindingContext="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext}"                            
                                 Command="{Binding HeartClickedCommand}"
                                 CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type StackLayout}}, Path=BindingContext}">
@@ -52,15 +59,14 @@
                                     </Style>
                                 </Button.Style>
                             </Button>
-                            
                             <Label Text="{Binding Artist}" Margin="10,10,10,0" WidthRequest="300" LineBreakMode="HeadTruncation"/>
-                            <Label Text="{Binding Album}" Margin="10,10,10,0" WidthRequest="300" LineBreakMode="HeadTruncation"/>
-                            <Label Text="{Binding TimesListened}" Margin="10,10,10,0" WidthRequest="160" LineBreakMode="HeadTruncation"/>                            
+                            <Label Text="{Binding Album}" Margin="0,10,10,0" WidthRequest="300" LineBreakMode="HeadTruncation"/>
+                            <Label Text="{Binding TimesListened}" Margin="0,10,10,0" WidthRequest="160" LineBreakMode="HeadTruncation"/>
                         </StackLayout> 
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <controls:SongBarView Grid.Row="1"/>
+        <controls:SongBarView Grid.Row="2"/>
     </Grid>
 </ContentPage>

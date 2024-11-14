@@ -16,11 +16,10 @@ namespace Nott.Models
 
         public List<Song> songQueue;
 
-       
+
         public delegate void EventHandler();
-        public event EventHandler OnChange = delegate { };
+        public event EventHandler QueueChange = delegate { };
         public event EventHandler PlaybackStarted = delegate { };
-        public event EventHandler PlaybackNotFinished = delegate { };
 
         public SoundPlayer(IAudioManager am)
         {
@@ -48,6 +47,7 @@ namespace Nott.Models
             }
             catch (Exception ex)
             {
+                audioPlayer = null;
                 //Breakpoint for debugging
                 Task.Delay(10);
             }
@@ -68,14 +68,19 @@ namespace Nott.Models
             if (songQueue.Count > 0)
             {
                 currentSong = songQueue[position];
-                OnChange?.Invoke();
+                //QueueChange?.Invoke();
                 PlayAudio();
             }
         }
         public void AddToQueue(Song song)
         {
             songQueue.Add(song);
-            OnChange();
+            QueueChange();
+        }
+        public void AddToQueue(List<Song> songs)
+        {
+            songQueue = songs;
+            QueueChange();
         }
         public void SetVolume(double v)
         {

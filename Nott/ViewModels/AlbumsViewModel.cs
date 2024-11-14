@@ -50,7 +50,9 @@ public partial class AlbumsViewModel : ObservableObject
     [RelayCommand]
     public void PlaySong(Song song)
     {
+        if (song == null) return;
         soundPlayer.currentSong = song;
+        soundPlayer.songQueue = ListOfAlbumsSongs.ToList();
         soundPlayer.PlayAudio();
     }
 }

@@ -17,7 +17,7 @@ namespace Nott.ViewModels
         {
             soundPlayer = sp;
             songQueue = [];
-            soundPlayer.OnChange += UpdateView;
+            //soundPlayer.QueueChange += UpdateView;
         }
         public void UpdateView()
         {
@@ -28,6 +28,7 @@ namespace Nott.ViewModels
                 SongQueue.Add(new PositionSong { Position = i, Song = song });
                 i++;
             }
+            Task.Delay(1);
         }
 
         [RelayCommand]

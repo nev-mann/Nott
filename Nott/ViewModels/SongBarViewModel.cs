@@ -43,8 +43,10 @@ public partial class SongBarViewModel : ObservableObject
     {
         PlaySource = playImage = "pause.png";
         Duration = 0;
+
         returnTask = false;
-        soundPlayer.PlaybackStarted += delegate {Task.Run(UpdateDuration);};
+        Task.Run(UpdateDuration);
+
         if (soundPlayer.audioPlayer is not null)
             soundPlayer.audioPlayer.PlaybackEnded += delegate { 
                 returnTask = true; 

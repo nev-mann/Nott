@@ -7,7 +7,7 @@
     Title="Nott">
     
     <FlyoutItem Title="Songs">
-        <ShellContent Route="SongsPage" ContentTemplate="{DataTemplate local:SongsPage}" />
+        <ShellContent Route="" ContentTemplate="{DataTemplate local:SongsPage}" />
     </FlyoutItem>
 
     <FlyoutItem Title="Albums">

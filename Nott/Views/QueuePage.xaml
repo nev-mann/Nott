@@ -7,18 +7,23 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         
         <CollectionView ItemsSource="{Binding SongQueue}" SelectionMode="None" Grid.Row="0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Song.Id}" Margin="10"/>
-                        <Label Text="{Binding Song.Title}" Margin="10"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"></ColumnDefinition>
+                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Position}" Margin="10" />
+                        <Label Text="{Binding Song.Title}" Margin="10" Grid.Column="1"/>
                         <Button Text="X" Command="{Binding BindingContext.RemoveSongCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}" 
-                    CommandParameter="{Binding Position}"/>
-                    </StackLayout>
+                            CommandParameter="{Binding Position}" Grid.Column="2"/>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

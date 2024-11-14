@@ -34,6 +34,7 @@ public partial class SongsViewModel : ObservableObject
     {
         if (SelectedSong is null) return;
         soundPlayer.currentSong = song;
+        soundPlayer.AddToQueue(ListOfSongs.ToList());
         soundPlayer.PlayAudio();
         //Without this dalay the item was still selected
         //Delay somehow fixes that

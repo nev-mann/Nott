@@ -22,7 +22,7 @@ namespace Nott.ViewModels
         public void UpdateView()
         {
             SongQueue = [];
-            var i = 0;
+            var i = 1;
             foreach (var song in soundPlayer.songQueue)
             {
                 SongQueue.Add(new PositionSong { Position = i, Song = song });

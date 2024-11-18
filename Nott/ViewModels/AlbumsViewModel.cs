@@ -20,6 +20,9 @@ public partial class AlbumsViewModel : ObservableObject
     [ObservableProperty]
     public AlbumWithPicture selectedAlbum;
 
+    [ObservableProperty]
+    public Song? selectedSong;
+
     public AlbumsViewModel(SoundPlayer sp, DatabaseHandler db,AppSettings ap)
     {
         soundPlayer = sp; databaseHandler = db; appSettings = ap;
@@ -48,11 +51,18 @@ public partial class AlbumsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    public void PlaySong(Song song)
+    public void PlaySong()
     {
-        if (song == null) return;
-        soundPlayer.currentSong = song;
+        if (SelectedSong == null) return;
+        soundPlayer.currentSong = SelectedSong;
         soundPlayer.songQueue = ListOfAlbumsSongs.ToList();
         soundPlayer.PlayAudio();
+
+        //Without this dalay the item was still selected
+        //Delay somehow fixes that
+        Task.Run(async () => {
+            await Task.Delay(10);
+            SelectedSong = null;
+        });
     }
 }

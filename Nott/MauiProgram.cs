@@ -48,6 +48,7 @@ namespace Nott
             builder.Services.AddSingleton<DatabaseHandler>();
             builder.AddAudio();
 
+
             //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.json"));
             //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.db"));
 

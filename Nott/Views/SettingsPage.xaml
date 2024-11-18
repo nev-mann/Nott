@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:Nott.Views.Controls"
-             x:Class="Nott.Views.SettingsPage"
-             Title="SettingsPage">
+<ContentPage
+    x:Class="Nott.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Nott.Views.Controls"
+    Title="SettingsPage">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition />
+            <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
         <VerticalStackLayout Grid.Row="0">
-            <Label 
+            <Label
+                HorizontalOptions="Center"
                 Text="Shuffle Songs"
-                VerticalOptions="Center" 
-                HorizontalOptions="Center" />        
-            <Switch IsToggled="{Binding Shuffle}"/>
-            <Entry x:Name="Entry" Text="{Binding FolderPath}"  ClearButtonVisibility="WhileEditing" />
-            <Button Text="Add folder" Command="{Binding AddFolderCommand}" CommandParameter="{Binding Text, Source={x:Reference Entry}}"/>
-            <CollectionView ItemsSource="{Binding SongsFolders}" x:Name="mCollectionView">
+                VerticalOptions="Center" />
+            <Switch IsToggled="{Binding Shuffle}" />
+            <Entry
+                x:Name="Entry"
+                ClearButtonVisibility="WhileEditing"
+                Text="{Binding FolderPath}" />
+            <Button
+                Command="{Binding AddFolderCommand}"
+                CommandParameter="{Binding Text, Source={x:Reference Entry}}"
+                Text="Add folder" />
+            <CollectionView x:Name="mCollectionView" ItemsSource="{Binding SongsFolders}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding .}" Margin="10" x:Name="Label"></Label>
-                            <Button Text="X" Command="{Binding BindingContext.RemoveFolderCommand, Source={x:Reference Entry}}" 
-                            CommandParameter="{Binding Text, Source={x:Reference Label}}"/>
+                            <Label
+                                x:Name="Label"
+                                Margin="10"
+                                Text="{Binding .}" />
+                            <Button
+                                Command="{Binding BindingContext.RemoveFolderCommand, Source={x:Reference Entry}}"
+                                CommandParameter="{Binding Text, Source={x:Reference Label}}"
+                                Text="X" />
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Button Text="Save settings" Command="{Binding SavingCommand}"/>
+            <Button Command="{Binding SavingCommand}" Text="Save settings" />
         </VerticalStackLayout>
 
-        <controls:SongBarView Grid.Row="1"/>
+        <controls:SongBarView Grid.Row="1" />
     </Grid>
 </ContentPage>

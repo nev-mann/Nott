@@ -1,6 +1,9 @@
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
+using Nott.ViewModels;
+using Nott.Views.Controls;
 using System.Collections.ObjectModel;
 
 namespace Nott.ViewModels;
@@ -30,6 +33,12 @@ public partial class SongsViewModel : ObservableObject
         soundPlayer.AddToQueue(song);        
     }
     [RelayCommand]
+    public async Task AddToPlaylist(Song song)
+    {
+        var popup = new PopUpView(new PopUpViewModel(song));
+        Shell.Current.CurrentPage.ShowPopup(popup);
+    }
+    [RelayCommand]
 	public void PlaySong(Song song)
     {
         if (SelectedSong is null) return;
@@ -48,7 +57,7 @@ public partial class SongsViewModel : ObservableObject
     {
         var db = new DatabaseHandler();
         song.Favorite ^= true;
-        ListOfSongs[song.Id-1] = song;
+        ListOfSongs[song.Id - 1] = song;
         db.Update(song);
     }
     public void UpdateListSongs()

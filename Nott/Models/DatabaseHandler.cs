@@ -11,6 +11,8 @@ namespace Nott.Models
             _db = new SQLiteConnection(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Nott.db"));
             _db.CreateTable<Song>();
             _db.CreateTable<Album>();
+            _db.CreateTable<SongPlaylist>();
+            _db.CreateTable<Playlist>();
         }
         public void AddSong(string path)
         {
@@ -56,22 +58,26 @@ namespace Nott.Models
         {
 
         }
+        public void AddPlaylist(string name)
+        {
 
+        }
         public List<Song> AllSongs()
         {
             return _db.Query<Song>("SELECT * FROM Songs");
         }
-
         public List<Album> AllAlbums()
         {
             return _db.Query<Album>("SELECT * FROM Albums");
         }
-
+        public List<Playlist> AllPlaylists()
+        {
+            return _db.Query<Playlist>("SELECT * FROM Playlists");
+        }
         public List<Song> AlbumsSongs(Album album)
         {
             return _db.Query<Song>("SELECT * FROM Songs INNER JOIN Albums ON Songs.album=Albums.albumName WHERE Songs.album=\""+ album.AlbumName + '\"');
-        }
-
+        }        
         public void Update(Song song)
         {
             _db.Update(song);

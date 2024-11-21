@@ -10,8 +10,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Horizontal">
-                            <CheckBox />
-                            <Label Text="{Binding}" />
+                            <CheckBox IsChecked="{Binding IsIn}" />
+                            <Label Text="{Binding Playlist}" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

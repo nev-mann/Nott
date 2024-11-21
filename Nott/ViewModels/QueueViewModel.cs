@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Nott.ViewModels
 {
@@ -41,9 +40,9 @@ namespace Nott.ViewModels
 
         public partial class PositionSong : ObservableObject
         {
-		[ObservableProperty]
+            [ObservableProperty]
             public int position;
-		[ObservableProperty]
+            [ObservableProperty]
             public Song? song;
         }
     }

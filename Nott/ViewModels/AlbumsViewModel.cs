@@ -23,7 +23,7 @@ public partial class AlbumsViewModel : ObservableObject
     [ObservableProperty]
     public Song? selectedSong;
 
-    public AlbumsViewModel(SoundPlayer sp, DatabaseHandler db,AppSettings ap)
+    public AlbumsViewModel(SoundPlayer sp, DatabaseHandler db, AppSettings ap)
     {
         soundPlayer = sp; databaseHandler = db; appSettings = ap;
 
@@ -60,7 +60,8 @@ public partial class AlbumsViewModel : ObservableObject
 
         //Without this dalay the item was still selected
         //Delay somehow fixes that
-        Task.Run(async () => {
+        Task.Run(async () =>
+        {
             await Task.Delay(10);
             SelectedSong = null;
         });

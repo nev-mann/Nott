@@ -11,7 +11,7 @@ namespace Nott.Models
             ".wav",
             ];
 
-        private List<string> SongsPaths = [];        
+        private List<string> SongsPaths = [];
         public SongList(AppSettings ap)
         {
             //Using ToList because without it, it is a refreance and I want a copy (better solution?) 
@@ -28,15 +28,16 @@ namespace Nott.Models
             }
 
             SongsFolders.AddRange(tmp);
-            
+
             foreach (string folder in SongsFolders)
             {
                 SongsPaths.AddRange(Directory.GetFiles(folder));
-            }                       
+            }
 
-            for (var i = 0;i < SongsPaths.Count;i++)
+            for (var i = 0; i < SongsPaths.Count; i++)
             {
-                if (!IsMusicExt(SongsPaths[i])) {
+                if (!IsMusicExt(SongsPaths[i]))
+                {
                     SongsPaths.RemoveAt(i);
                     i--;
                 }

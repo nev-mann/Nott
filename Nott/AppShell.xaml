@@ -5,20 +5,24 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Nott.Views"
     Title="Nott">
-    
+
     <FlyoutItem Title="Songs">
-        <ShellContent Route="" ContentTemplate="{DataTemplate local:SongsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:SongsPage}" Route="" />
     </FlyoutItem>
 
     <FlyoutItem Title="Albums">
-        <ShellContent Route="AlbumsPage" ContentTemplate="{DataTemplate local:AlbumsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:AlbumsPage}" Route="AlbumsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Playlists">
+        <ShellContent ContentTemplate="{DataTemplate local:PlaylistsPage}" Route="PlaylistsPage" />
     </FlyoutItem>
 
     <FlyoutItem Title="Queue">
-        <ShellContent Route="QueuePage" ContentTemplate="{DataTemplate local:QueuePage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:QueuePage}" Route="QueuePage" />
     </FlyoutItem>
-    
+
     <FlyoutItem Title="Settings">
-        <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Route="SettingsPage" />
     </FlyoutItem>
 </Shell>

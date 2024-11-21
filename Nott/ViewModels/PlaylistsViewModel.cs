@@ -7,21 +7,25 @@ namespace Nott.ViewModels;
 
 public partial class PlaylistsViewModel : ObservableObject
 {
-	private readonly SoundPlayer soundPlayer;
-	private readonly AppSettings appSettings;
+    private readonly SoundPlayer soundPlayer;
+    private readonly AppSettings appSettings;
 
     [ObservableProperty]
-    ObservableCollection<List<Song>> listOfPlaylist;
+    ObservableCollection<Playlist> listOfPlaylists;
+
+    [ObservableProperty]
+    ObservableCollection<Song> listOfSongs;
 
     public PlaylistsViewModel(SoundPlayer sp, AppSettings settings)
     {
         soundPlayer = sp;
         appSettings = settings;
-        //listOfPlaylist = new ObservableCollection<Song>(appSettings.);
+        listOfPlaylists = new ObservableCollection<Playlist>(new DatabaseHandler().AllPlaylists());
     }
 
     [RelayCommand]
-    public void Func()
-    {    
-    }    
+    public void DisplayPlaylist(Playlist pl)
+    {
+        ListOfSongs = new ObservableCollection<Song>(new DatabaseHandler().PlaylistSongs(pl));
+    }
 }

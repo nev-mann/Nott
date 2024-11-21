@@ -8,23 +8,30 @@ namespace Nott.ViewModels;
 
 public partial class SettingsViewModel : ObservableObject
 {
-	private AppSettings appSettings;
+    private AppSettings appSettings;
 
-	[ObservableProperty]
-	bool shuffle;
+    [ObservableProperty]
+    bool shuffle;
 
     [ObservableProperty]
     ObservableCollection<string> songsFolders;
 
+    public SettingsViewModel(AppSettings s)
+    {
+        appSettings = s;
+        SongsFolders = new ObservableCollection<string>(appSettings.settings.SongsFolders);
+        shuffle = appSettings.settings.Shuffle;
+    }
+
     [RelayCommand]
-	public void Saving()
-	{
+    public void Saving()
+    {
         appSettings.settings.Shuffle = Shuffle;
         appSettings.Save();
-	}
+    }
 
-	[RelayCommand]
-	public async Task AddFolder(string folderPath)
+    [RelayCommand]
+    public async Task AddFolder(string folderPath)
     {
         try
         {
@@ -41,17 +48,10 @@ public partial class SettingsViewModel : ObservableObject
         }
     }
 
-	[RelayCommand]
-	public void RemoveFolder(string folderPath)
-	{
-		appSettings.settings.SongsFolders.Remove(folderPath);
-		SongsFolders.Remove(folderPath);
-	}
-
-	public SettingsViewModel(AppSettings s)
+    [RelayCommand]
+    public void RemoveFolder(string folderPath)
     {
-        appSettings = s;
-        SongsFolders = new ObservableCollection<string>(appSettings.settings.SongsFolders);
-        shuffle = appSettings.settings.Shuffle;
-	}
+        appSettings.settings.SongsFolders.Remove(folderPath);
+        SongsFolders.Remove(folderPath);
+    }
 }

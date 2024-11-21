@@ -74,14 +74,23 @@ namespace Nott.Models
         {
             return _db.Query<Playlist>("SELECT * FROM Playlists");
         }
+        public List<Song> PlaylistSongs(Playlist pl)
+        {
+            return _db.Query<Song>("SELECT Songs.* FROM Songs INNER JOIN SongPlaylist ON Songs.id=SongPlaylist.song_id WHERE SongPlaylist.playlist_id="+pl.Id);
+        }
+        public List<Playlist> SongPlaylists(Song s)
+        {
+            return _db.Query<Playlist>("SELECT Playlists.* FROM Playlists INNER JOIN SongPlaylist ON Playlists.id=SongPlaylist.playlist_id WHERE SongPlaylist.song_id=" + s.Id);
+        }
         public List<Song> AlbumsSongs(Album album)
         {
             return _db.Query<Song>("SELECT * FROM Songs INNER JOIN Albums ON Songs.album=Albums.albumName WHERE Songs.album=\""+ album.AlbumName + '\"');
-        }        
+        }
         public void Update(Song song)
         {
             _db.Update(song);
         }
+
     };
 
 }

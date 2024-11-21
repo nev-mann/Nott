@@ -48,10 +48,11 @@ public partial class SongBarViewModel : ObservableObject
         Task.Run(UpdateDuration);
 
         if (soundPlayer.audioPlayer is not null)
-            soundPlayer.audioPlayer.PlaybackEnded += delegate { 
-                returnTask = true; 
-                Duration = 0; 
-                PlaySource = playImage = "play.png"; 
+            soundPlayer.audioPlayer.PlaybackEnded += delegate
+            {
+                returnTask = true;
+                Duration = 0;
+                PlaySource = playImage = "play.png";
             };
     }
     private async Task UpdateDuration()

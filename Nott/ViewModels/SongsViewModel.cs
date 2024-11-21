@@ -2,7 +2,6 @@ using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
-using Nott.ViewModels;
 using Nott.Views.Controls;
 using System.Collections.ObjectModel;
 
@@ -10,14 +9,14 @@ namespace Nott.ViewModels;
 
 public partial class SongsViewModel : ObservableObject
 {
-	[ObservableProperty]
-	public ObservableCollection<Song> listOfSongs = [];
+    [ObservableProperty]
+    public ObservableCollection<Song> listOfSongs = [];
 
-	[ObservableProperty]
-	Song? selectedSong;
+    [ObservableProperty]
+    Song? selectedSong;
 
-	private readonly SoundPlayer soundPlayer;
-	private readonly AppSettings appSettings;
+    private readonly SoundPlayer soundPlayer;
+    private readonly AppSettings appSettings;
 
     public SongsViewModel(SoundPlayer sp, AppSettings settings)
     {
@@ -30,7 +29,7 @@ public partial class SongsViewModel : ObservableObject
     [RelayCommand]
     public void AddToQueue(Song song)
     {
-        soundPlayer.AddToQueue(song);        
+        soundPlayer.AddToQueue(song);
     }
     [RelayCommand]
     public async Task AddToPlaylist(Song song)
@@ -39,7 +38,7 @@ public partial class SongsViewModel : ObservableObject
         Shell.Current.CurrentPage.ShowPopup(popup);
     }
     [RelayCommand]
-	public void PlaySong(Song song)
+    public void PlaySong(Song song)
     {
         if (SelectedSong is null) return;
         soundPlayer.currentSong = song;
@@ -47,7 +46,8 @@ public partial class SongsViewModel : ObservableObject
         soundPlayer.PlayAudio();
         //Without this dalay the item was still selected
         //Delay somehow fixes that
-        Task.Run(async () => {
+        Task.Run(async () =>
+        {
             await Task.Delay(10);
             SelectedSong = null;
         });

@@ -61,6 +61,7 @@ namespace Nott.Models
         public double Volume { get; set; }
         public List<Song>? Queue { get; set; }
     }
+
     public partial class AlbumWithPicture : ObservableObject
     {
         [ObservableProperty]

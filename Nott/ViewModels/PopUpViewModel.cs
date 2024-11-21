@@ -6,18 +6,32 @@ namespace Nott.ViewModels;
 
 public partial class PopUpViewModel : ObservableObject
 {
-	[ObservableProperty]
-	public string text;
-	[ObservableProperty]
-	public ObservableCollection<string> listOfPlaylist;
+    [ObservableProperty]
+    public ObservableCollection<Bp> listOfPlaylist = [];
     public PopUpViewModel(Song song)
-	{
-		Text = song.Title;
-		var db = new DatabaseHandler();
-		ListOfPlaylist = new ObservableCollection<string>();
-		foreach(var playlist in db.AllPlaylists())
-		{
-			ListOfPlaylist.Add(playlist.Name);
-		}
-	}
+    {
+        var db = new DatabaseHandler();
+
+        var songPlaylists = db.SongPlaylists(song);
+        foreach (var playlist in db.AllPlaylists())
+        {
+            var found = false;
+            foreach (var item in songPlaylists) { 
+                if(playlist.Id == item.Id)
+                {
+                    ListOfPlaylist.Add(new Bp { IsIn = true, Playlist = playlist.Name });
+                    found = true;
+                    break;
+                }
+            }
+            if(!found) ListOfPlaylist.Add(new Bp { IsIn = false, Playlist = playlist.Name });
+        }
+    }
+}
+public partial class Bp : ObservableObject
+{
+    [ObservableProperty]
+    public bool isIn;
+    [ObservableProperty]
+    public string playlist;
 }

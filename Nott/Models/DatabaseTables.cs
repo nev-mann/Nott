@@ -51,8 +51,8 @@ namespace Nott.Models
         [Column("song_id")]
         public int SongId { get; set; }
 
-        [Column("album_id")]
-        public string AlbumId{ get; set; }
+        [Column("playlist_id")]
+        public string PlaylistId { get; set; }
     }
 
     [Table("Playlists")]

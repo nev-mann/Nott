@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using Nott.Models;
-using Nott.Views;
 using Nott.ViewModels;
-using Plugin.Maui.Audio;
-using CommunityToolkit.Maui;
+using Nott.Views;
 using Nott.Views.Controls;
+using Plugin.Maui.Audio;
 
 namespace Nott
 {
@@ -15,7 +15,7 @@ namespace Nott
             => serviceProvider.GetService<SoundPlayer>();
         public static SongBarViewModel GetSongBarViewModel<SongBarViewModel>()
             => serviceProvider.GetService<SongBarViewModel>();
-        
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -29,7 +29,7 @@ namespace Nott
                 });
 
             builder.Services.AddSingleton<SongsViewModel>();
-            builder.Services.AddSingleton<SongsPage>(); 
+            builder.Services.AddSingleton<SongsPage>();
 
             builder.Services.AddSingleton<AlbumsViewModel>();
             builder.Services.AddSingleton<AlbumsPage>();
@@ -43,6 +43,9 @@ namespace Nott
             builder.Services.AddSingleton<SongBarViewModel>();
             builder.Services.AddSingleton<SongBarView>();
 
+            builder.Services.AddSingleton<PlaylistsViewModel>();
+            builder.Services.AddSingleton<PlaylistsPage>();
+
             builder.Services.AddSingleton<SoundPlayer>();
             builder.Services.AddSingleton<AppSettings>();
             builder.Services.AddSingleton<DatabaseHandler>();
@@ -55,7 +58,7 @@ namespace Nott
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-            var app= builder.Build();
+            var app = builder.Build();
             serviceProvider = app.Services;
             return app;
         }

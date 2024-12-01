@@ -9,9 +9,11 @@ public partial class PopUpView : Popup
     {
         InitializeComponent();
         BindingContext = vm;
+        vm.ClosePopup += ClosePopup;
     }
-    private void Button_Clicked(object sender, EventArgs e)
+
+    private void ClosePopup()
     {
-        this.Close();
+        Close();
     }
 }

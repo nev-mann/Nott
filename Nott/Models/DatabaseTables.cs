@@ -62,7 +62,6 @@ namespace Nott.Models
         [Column("id")]
         public int Id { get; set; }
 
-        [Unique]
         [Column("name")]
         public string Name { get; set; }
     }

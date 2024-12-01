@@ -60,7 +60,7 @@ namespace Nott.Models
         }
         public void AddPlaylist(string name)
         {
-
+            _db.Insert(new Playlist { Name = name });
         }
         public List<Song> AllSongs()
         {
@@ -73,6 +73,10 @@ namespace Nott.Models
         public List<Playlist> AllPlaylists()
         {
             return _db.Query<Playlist>("SELECT * FROM Playlists");
+        }
+        public void RemovePlaylist(Playlist pl)
+        {
+            _db.Delete(pl);
         }
         public List<Song> PlaylistSongs(Playlist pl)
         {
@@ -90,7 +94,6 @@ namespace Nott.Models
         {
             _db.Update(song);
         }
-
     };
 
 }

@@ -40,6 +40,9 @@ namespace Nott
             builder.Services.AddSingleton<QueueViewModel>();
             builder.Services.AddSingleton<QueuePage>();
 
+            builder.Services.AddTransient<PopUpViewModel>();
+            builder.Services.AddTransient<PopUpView>();
+
             builder.Services.AddSingleton<SongBarViewModel>();
             builder.Services.AddSingleton<SongBarView>();
 

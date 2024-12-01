@@ -13,24 +13,50 @@
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <CollectionView
                 ItemsSource="{Binding ListOfPlaylists}"
-                SelectedItem="{Binding SelectedPlaylist}"
                 SelectionChangedCommand="{Binding DisplayPlaylistCommand}"
                 SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
                 SelectionMode="Single">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">
-                            <Label Margin="10" Text="{Binding Name}" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90" />
+                                    <ColumnDefinition Width="300" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Margin="10" Text="{Binding Name}" />
+                                <Button
+                                    Grid.Column="2"
+                                    Command="{Binding BindingContext.RemovePlaylistCommand, Source={RelativeSource AncestorType={x:Type CollectionView}}}"
+                                    CommandParameter="{Binding}"
+                                    Text="X" />
+                            </Grid>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <StackLayout Grid.Row="1" Orientation="Horizontal">
+                <Entry WidthRequest="200" />
+
+                <Button
+                    Command="{Binding AddPlaylistCommand}"
+                    CommandParameter="asd"
+                    Text="+"
+                    WidthRequest="1" />
+            </StackLayout>
+
             <CollectionView
+                Grid.RowSpan="2"
                 Grid.Column="1"
                 ItemsSource="{Binding ListOfSongs}"
                 SelectedItem="{Binding SelectedSong}"

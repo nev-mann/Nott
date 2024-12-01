@@ -20,12 +20,26 @@ public partial class PlaylistsViewModel : ObservableObject
     {
         soundPlayer = sp;
         appSettings = settings;
-        listOfPlaylists = new ObservableCollection<Playlist>(new DatabaseHandler().AllPlaylists());
+        ListOfPlaylists = new ObservableCollection<Playlist>(new DatabaseHandler().AllPlaylists());
+    }
+
+    [RelayCommand]
+    public void RemovePlaylist(Playlist pl)
+    {
+        new DatabaseHandler().RemovePlaylist(pl);
+        ListOfPlaylists = new ObservableCollection<Playlist>(new DatabaseHandler().AllPlaylists());
     }
 
     [RelayCommand]
     public void DisplayPlaylist(Playlist pl)
     {
         ListOfSongs = new ObservableCollection<Song>(new DatabaseHandler().PlaylistSongs(pl));
+    }
+
+    [RelayCommand]
+    public void AddPlaylist(string name)
+    {
+        new DatabaseHandler().AddPlaylist(name);
+        ListOfPlaylists = new ObservableCollection<Playlist>(new DatabaseHandler().AllPlaylists());
     }
 }

@@ -22,6 +22,7 @@
             </Grid.RowDefinitions>
             <CollectionView
                 ItemsSource="{Binding ListOfPlaylists}"
+                SelectedItem="{Binding SelectedPlaylist}"
                 SelectionChangedCommand="{Binding DisplayPlaylistCommand}"
                 SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
                 SelectionMode="Single">

@@ -15,5 +15,7 @@ public partial class PlaylistsPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
+		if(viewModel.SelectedPlaylist is not null)
+            viewModel.DisplayPlaylist(viewModel.SelectedPlaylist);
     }
 }

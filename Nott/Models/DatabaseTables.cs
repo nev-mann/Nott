@@ -2,7 +2,7 @@
 
 namespace Nott.Models
 {
-
+#pragma warning disable CS8618
     [Table("Songs")]
     public class Song
     {
@@ -12,22 +12,22 @@ namespace Nott.Models
 
         [Unique]
         [Column("path")]
-        public string? Path { get; set; }
+        public string Path { get; set; }
 
         [Column("artist")]
-        public string? Artist { get; set; }
+        public string Artist { get; set; }
 
         [Column("title")]
-        public string? Title { get; set; }
+        public string Title { get; set; }
 
         [Column("album")]
-        public string? Album { get; set; }
+        public string Album { get; set; }
 
         [Column("favorite")]
-        public bool? Favorite { get; set; }
+        public bool Favorite { get; set; }
 
         [Column("timeslistened")]
-        public int? TimesListened { get; set; }
+        public int TimesListened { get; set; }
     }
 
     [Table("Albums")]
@@ -39,10 +39,10 @@ namespace Nott.Models
 
         [Unique]
         [Column("albumPath")]
-        public string? AlbumPath { get; set; }
+        public string AlbumPath { get; set; }
 
         [Column("albumName")]
-        public string? AlbumName { get; set; }
+        public string AlbumName { get; set; }
     }
 
     [Table("SongPlaylist")]
@@ -65,4 +65,5 @@ namespace Nott.Models
         [Column("name")]
         public string Name { get; set; }
     }
+#pragma warning restore CS8618 
 }

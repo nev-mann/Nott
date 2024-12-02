@@ -1,32 +1,26 @@
 ﻿using Plugin.Maui.Audio;
+using System.Diagnostics;
 
 namespace Nott.Models
 {
-    public class SoundPlayer
+    public class SoundPlayer(IAudioManager am)
     {
-        private readonly IAudioManager audioManager;
+        private readonly IAudioManager audioManager = am;
         public IAudioPlayer? audioPlayer;
 
         public double volume;
-        public int position;
+        public int position = 0;
         public bool shuffle;
         public bool repeat;
 
         public Song? currentSong;
 
-        public List<Song> songQueue;
-
+        public List<Song> songQueue = [];
 
         public delegate void EventHandler();
         public event EventHandler QueueChange = delegate { };
         public event EventHandler PlaybackStarted = delegate { };
 
-        public SoundPlayer(IAudioManager am)
-        {
-            audioManager = am;
-            position = 0;
-            songQueue = [];
-        }
         public void PlayAudio()
         {
             try
@@ -47,8 +41,9 @@ namespace Nott.Models
             }
             catch (Exception ex)
             {
-                audioPlayer = null;
+                audioPlayer = null;                
                 //Breakpoint for debugging
+                Debug.WriteLine(ex.Message);
                 Task.Delay(10);
             }
 
@@ -57,10 +52,11 @@ namespace Nott.Models
         public void ResumeAudio() => audioPlayer?.Play();
         private void PlaybackEnded(object? sender, EventArgs e)
         {
-            //add times listened
+            if(currentSong is null) return;
+            //updates times listened
             var db = new DatabaseHandler();
             currentSong.TimesListened += 1;
-            db.Update(currentSong);
+            db.UpdateSong(currentSong);
 
 
             //play next song

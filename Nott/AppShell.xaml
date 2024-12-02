@@ -27,5 +27,5 @@
         <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" Route="SettingsPage" />
     </FlyoutItem>
 
-    <ShellContent ContentTemplate="{DataTemplate con:PopUpView}" Route="popup" />
+    <ShellContent ContentTemplate="{DataTemplate con:AddToPlaylistView}" Route="popup" />
 </Shell>

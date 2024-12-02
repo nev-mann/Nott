@@ -8,6 +8,6 @@ public partial class SongBarView : ContentView
 	public SongBarView()
 	{
 		InitializeComponent();
-		BindingContext = MauiProgram.GetSongBarViewModel<SongBarViewModel>();
+		BindingContext = MauiProgram.GetSongBarViewModel();
     }
 }

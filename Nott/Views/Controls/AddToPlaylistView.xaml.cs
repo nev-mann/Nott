@@ -3,9 +3,9 @@ using Nott.ViewModels;
 
 namespace Nott.Views.Controls;
 
-public partial class PopUpView : Popup
+public partial class AddToPlaylistView : Popup
 {
-    public PopUpView(PopUpViewModel vm)
+    public AddToPlaylistView(AddToPlaylistViewModel vm)
     {
         InitializeComponent();
         BindingContext = vm;

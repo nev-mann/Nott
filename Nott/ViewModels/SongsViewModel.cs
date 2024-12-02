@@ -32,9 +32,9 @@ public partial class SongsViewModel : ObservableObject
         soundPlayer.AddToQueue(song);
     }
     [RelayCommand]
-    public async Task AddToPlaylist(Song song)
+    public void AddToPlaylist(Song song)
     {
-        var popup = new PopUpView(new PopUpViewModel(song));
+        var popup = new AddToPlaylistView(new AddToPlaylistViewModel(song));
         Shell.Current.CurrentPage.ShowPopup(popup);
     }
     [RelayCommand]
@@ -58,8 +58,9 @@ public partial class SongsViewModel : ObservableObject
         var db = new DatabaseHandler();
         song.Favorite ^= true;
         ListOfSongs[song.Id - 1] = song;
-        db.Update(song);
+        db.UpdateSong(song);
     }
+
     public void UpdateListSongs()
     {
         var db = new DatabaseHandler();

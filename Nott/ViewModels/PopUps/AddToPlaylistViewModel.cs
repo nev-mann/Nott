@@ -2,20 +2,22 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Nott.Models;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace Nott.ViewModels;
 
-public partial class PopUpViewModel : ObservableObject
+public partial class AddToPlaylistViewModel : ObservableObject
 {
     [ObservableProperty]
     public ObservableCollection<Bp> listOfPlaylist = [];
 
     public delegate void EventHandler();
     public event EventHandler? ClosePopup;
-    public PopUpViewModel(Song song)
+
+    private readonly Song _song;
+    public AddToPlaylistViewModel(Song song)
     {
         var db = new DatabaseHandler();
+        _song = song;
 
         var songPlaylists = db.SongPlaylists(song);
         foreach (var playlist in db.AllPlaylists())
@@ -24,18 +26,31 @@ public partial class PopUpViewModel : ObservableObject
             foreach (var item in songPlaylists) { 
                 if(playlist.Id == item.Id)
                 {
-                    ListOfPlaylist.Add(new Bp { IsIn = true, Playlist = playlist.Name });
+                    ListOfPlaylist.Add(new Bp ( true, playlist));
                     found = true;
                     break;
                 }
             }
-            if(!found) ListOfPlaylist.Add(new Bp { IsIn = false, Playlist = playlist.Name });
+            if(!found) ListOfPlaylist.Add(new Bp ( false, playlist ));
         }
     }
 
     [RelayCommand]
     public void Save()
     {
+        var db = new DatabaseHandler();
+
+        foreach (var playlist in ListOfPlaylist)
+        {
+            if (playlist.IsIn)
+            {
+                db.AddToPlaylist(_song, playlist.Playlist);
+            }
+            else
+            {
+                db.RemoveFromPlaylist(_song, playlist.Playlist);
+            }
+        }
         Cancel();
     }
     [RelayCommand]
@@ -44,10 +59,10 @@ public partial class PopUpViewModel : ObservableObject
         ClosePopup?.Invoke();
     }
 }
-public partial class Bp : ObservableObject
+public partial class Bp(bool isIn, Playlist playlist) : ObservableObject
 {
     [ObservableProperty]
-    public bool isIn;
+    public bool isIn = isIn;
     [ObservableProperty]
-    public string playlist;
+    public Playlist playlist = playlist;
 }

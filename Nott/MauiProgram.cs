@@ -10,11 +10,11 @@ namespace Nott
 {
     public static class MauiProgram
     {
-        static IServiceProvider serviceProvider;
-        public static SoundPlayer GetSoundPlayer<SoundPlayer>()
-            => serviceProvider.GetService<SoundPlayer>();
-        public static SongBarViewModel GetSongBarViewModel<SongBarViewModel>()
-            => serviceProvider.GetService<SongBarViewModel>();
+        static IServiceProvider? serviceProvider;
+        public static SongBarViewModel GetSongBarViewModel()
+        {
+            return serviceProvider?.GetService<SongBarViewModel>()!;
+        }
 
         public static MauiApp CreateMauiApp()
         {
@@ -40,8 +40,8 @@ namespace Nott
             builder.Services.AddSingleton<QueueViewModel>();
             builder.Services.AddSingleton<QueuePage>();
 
-            builder.Services.AddTransient<PopUpViewModel>();
-            builder.Services.AddTransient<PopUpView>();
+            builder.Services.AddTransient<AddToPlaylistViewModel>();
+            builder.Services.AddTransient<AddToPlaylistView>();
 
             builder.Services.AddSingleton<SongBarViewModel>();
             builder.Services.AddSingleton<SongBarView>();

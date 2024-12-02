@@ -4,7 +4,7 @@ namespace Nott.Models
 {
     public class DatabaseHandler
     {
-        private SQLiteConnection _db;
+        private readonly SQLiteConnection _db;
 
         public DatabaseHandler()
         {
@@ -26,13 +26,12 @@ namespace Nott.Models
                 Path = path,
                 Artist = tfile.Tag.FirstAlbumArtist,
                 Album = tfile.Tag.Album,                
-                Title = tfile.Tag.Title == null ? path[(path.LastIndexOf('\\') + 1)..] : tfile.Tag.Title,
+                Title = tfile.Tag.Title ?? path[(path.LastIndexOf('\\') + 1)..],
                 Favorite = false,
                 TimesListened = 0,
             };
 
             _db.Insert(song);
-
 
 
             if (tfile.Tag.Album == null) return;
@@ -45,18 +44,11 @@ namespace Nott.Models
                 AlbumPath = path,               
             };
 
-            //System.IO.File.WriteAllBytes(Path.Combine("C:\\Users\\kamne\\Desktop", tfile.Tag.Album + ".png"), tfile.Tag.Pictures[0].Data.Data);
-
-            //using (StreamWriter outputFile = new StreamWriter(Path.Combine("C:\\Users\\kamne\\Desktop", tfile.Tag.Album+ ".png")))
-            //{
-            //    return;
-            //}
-
             _db.Insert(album);
         }
-        public void AddAlbum(string albumName)
+        public void AddAlbum(Album a)
         {
-
+            _db.Insert(a);
         }
         public void AddPlaylist(string name)
         {
@@ -78,6 +70,14 @@ namespace Nott.Models
         {
             _db.Delete(pl);
         }
+        public void RemoveFromPlaylist(Song s, Playlist pl)
+        {
+            _db.Execute("DELETE FROM SongPlaylist WHERE song_id=" + s.Id + " AND playlist_id=" + pl.Id);
+        }
+        public void AddToPlaylist(Song s, Playlist pl)
+        {
+            _db.Insert(new SongPlaylist { SongId = s.Id, PlaylistId = pl.Id.ToString() });
+        }
         public List<Song> PlaylistSongs(Playlist pl)
         {
             return _db.Query<Song>("SELECT Songs.* FROM Songs INNER JOIN SongPlaylist ON Songs.id=SongPlaylist.song_id WHERE SongPlaylist.playlist_id="+pl.Id);
@@ -86,13 +86,13 @@ namespace Nott.Models
         {
             return _db.Query<Playlist>("SELECT Playlists.* FROM Playlists INNER JOIN SongPlaylist ON Playlists.id=SongPlaylist.playlist_id WHERE SongPlaylist.song_id=" + s.Id);
         }
-        public List<Song> AlbumsSongs(Album album)
+        public List<Song> AlbumsSongs(Album a)
         {
-            return _db.Query<Song>("SELECT * FROM Songs INNER JOIN Albums ON Songs.album=Albums.albumName WHERE Songs.album=\""+ album.AlbumName + '\"');
+            return _db.Query<Song>("SELECT * FROM Songs INNER JOIN Albums ON Songs.album=Albums.albumName WHERE Songs.album=\""+ a.AlbumName + '\"');
         }
-        public void Update(Song song)
+        public void UpdateSong(Song s)
         {
-            _db.Update(song);
+            _db.Update(s);
         }
     };
 

@@ -76,8 +76,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Views\Controls\PopUpView.xaml.cs">
-	    <DependentUpon>PopUpView.xaml</DependentUpon>
+	  <Compile Update="Views\Controls\AddToPlaylistView.xaml.cs">
+	    <DependentUpon>AddToPlaylistView.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\SongsPage.xaml.cs">
 	    <DependentUpon>SongsPage.xaml</DependentUpon>
@@ -88,7 +88,7 @@
 	  <MauiXaml Update="Views\AlbumsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Controls\PopUpView.xaml">
+	  <MauiXaml Update="Views\Controls\AddToPlaylistView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Controls\SongBarView.xaml">

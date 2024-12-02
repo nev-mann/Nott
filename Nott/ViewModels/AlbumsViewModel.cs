@@ -18,7 +18,7 @@ public partial class AlbumsViewModel : ObservableObject
     ObservableCollection<Song> listOfAlbumsSongs = [];
 
     [ObservableProperty]
-    public AlbumWithPicture selectedAlbum;
+    public AlbumWithPicture? selectedAlbum;
 
     [ObservableProperty]
     public Song? selectedSong;
@@ -33,10 +33,10 @@ public partial class AlbumsViewModel : ObservableObject
             using var tfile = TagLib.File.Create(album.AlbumPath);
             if (tfile.Tag.Pictures.Length == 0) continue;
             ListOfAlbums.Add(new AlbumWithPicture
-            {
-                Album = album,
-                Data = tfile.Tag.Pictures[0].Data.Data
-            });
+            (
+                album,
+                tfile.Tag.Pictures[0].Data.Data
+            ));
         }
     }
 
@@ -65,5 +65,18 @@ public partial class AlbumsViewModel : ObservableObject
             await Task.Delay(10);
             SelectedSong = null;
         });
+    }
+    public partial class AlbumWithPicture : ObservableObject
+    {
+        [ObservableProperty]
+        public Album album;
+        [ObservableProperty]
+        public byte[] data;
+
+        public AlbumWithPicture(Album a, byte[] d)
+        {
+            album = a;
+            data = d;
+        }
     }
 }
